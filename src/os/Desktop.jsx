@@ -195,7 +195,7 @@ export default function Desktop() {
     e.preventDefault();
     os.showMenu(e.clientX, e.clientY, [
       { label: '&Cascade Windows', onClick: os.cascade }, { label: 'Tile &Horizontally', onClick: () => os.tile(true) }, { label: 'Tile &Vertically', onClick: () => os.tile(false) },
-      { label: '&Minimize All Windows', onClick: os.minimizeAll }, { sep: true }, { label: 'Task Man&ager', onClick: () => os.open('help') },
+      { label: '&Minimize All Windows', onClick: os.minimizeAll }, { sep: true }, { label: 'Task Man&ager', onClick: () => os.open('sysmon') },
     ]);
   };
   const taskMenu = (e, w) => {
@@ -213,10 +213,11 @@ export default function Desktop() {
   const app = (id, label, icon) => ({ label, icon, onClick: go(() => os.open(id)) });
   const startItems = [
     { label: '&Programs', icon: 'programs', sub: [
-      { label: 'Accessories', icon: 'folder', sub: [app('notepad', 'Notepad', 'notepad'), app('wordpad', 'WordPad', 'wordpad'), app('paint', 'Paint', 'paint'), app('calc', 'Calculator', 'calc'), app('media', 'Media Player', 'media'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('dos', 'MS-DOS Prompt', 'dos')] },
+      { label: 'Accessories', icon: 'folder', sub: [app('notepad', 'Notepad', 'notepad'), app('wordpad', 'WordPad', 'wordpad'), app('paint', 'Paint', 'paint'), app('calc', 'Calculator', 'calc'), app('media', 'Media Player', 'media'), app('sndrec', 'Sound Recorder', 'sound'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('dos', 'MS-DOS Prompt', 'dos')] },
+      { label: 'System Tools', icon: 'folder', sub: [app('drives', 'Virtual Drive Manager', 'drive'), app('sysmon', 'Resource Monitor', 'system'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('recycle', 'Cache & Recycle Bin', 'recycle')] },
       { label: 'Games', icon: 'folder', sub: [app('solitaire', 'Solitaire', 'solitaire'), app('minesweeper', 'Minesweeper', 'minesweeper'), app('freecell', 'FreeCell', 'freecell'), app('hearts', 'Hearts', 'hearts'), app('tetris', 'Tetris', 'tetris'), app('snake', 'Snake', 'snake'), { sep: true }, app('dosgames', 'DOSBox & Retro Computers', 'dosgames')] },
       { sep: true },
-      app('dosgames', 'DOSBox & Retro Computers', 'dosgames'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('browser', 'Internet Browser', 'browser'), app('dos', 'MS-DOS Prompt', 'dos'), app('explorer', 'Windows Explorer', 'explorer'),
+      app('dosgames', 'DOSBox & Retro Computers', 'dosgames'), app('drives', 'Virtual Drive Manager', 'drive'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('browser', 'Internet Browser', 'browser'), app('dos', 'MS-DOS Prompt', 'dos'), app('explorer', 'Windows Explorer', 'explorer'),
     ] },
     { label: '&Documents', icon: 'documents', sub: [{ label: 'My Documents', icon: 'folder', onClick: go(() => os.open('explorer', { folderId: 'docs' })) }, { sep: true }, ...(docs.length ? docs.map((n) => ({ label: n.name, icon: iconForFile(n), onClick: go(() => os.openNode(n)) })) : [{ label: '(Empty)', disabled: true }])] },
     { label: '&Settings', icon: 'settings', sub: [app('control', 'Control Panel', 'control'), { label: 'Display...', icon: 'display', onClick: go(() => os.open('control', { applet: 'display' })) }, { label: 'Sounds...', icon: 'sound', onClick: go(() => os.open('control', { applet: 'sounds' })) }, { label: 'Date/Time...', icon: 'clock', onClick: go(() => os.open('control', { applet: 'datetime' })) }] },

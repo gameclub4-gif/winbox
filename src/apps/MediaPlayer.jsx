@@ -5,6 +5,8 @@ import Icon from '../os/icons.jsx';
 import * as fs from '../os/fs.js';
 import { audioCtx } from '../os/sound.js';
 import { pickLocalFiles, saveLocalFile } from '../os/localFiles.js';
+import { pickLocalDirectory } from '../utils/localFolder.js';
+import { mountRemovableFolder } from '../utils/virtualDrives.js';
 
 const EXTS = ['wav', 'mp3', 'ogg', 'm4a', 'flac', 'aac', 'mp4', 'webm', 'mov', 'ogv', 'mkv'];
 const VIDEO = ['mp4', 'webm', 'mov', 'ogv', 'mkv'];
@@ -105,6 +107,8 @@ export default function MediaPlayer({ win, props }) {
     if (props.fileId) {
       const n = fs.get(props.fileId);
       if (n) addFsNode(n, true);
+    } else if (props.localFile) {
+      addLocalFiles([props.localFile], true);
     }
   }, [win.nonce]); // eslint-disable-line
 
@@ -189,6 +193,29 @@ export default function MediaPlayer({ win, props }) {
     if (picked?.length) addLocalFiles(picked, true);
   };
 
+  const mountMediaFolder = async () => {
+    const res = await pickLocalDirectory({ acceptExts: EXTS });
+    if (!res) return;
+    if (!res.entries.length) {
+      os.msg({ icon: 'info', title: 'Media Folder', text: `No supported audio or video files found inside "${res.name}".` });
+      return;
+    }
+    const drive = mountRemovableFolder(res);
+    setList((l) => {
+      const added = res.entries.map((en, k) => ({
+        id: `zc:${drive.id}:${k}:${en.name}`,
+        fsId: null,
+        getFile: en.getFile,
+        name: en.name,
+        driveLabel: drive.letter,
+        url: null,
+        video: VIDEO.includes(en.ext),
+      }));
+      setIdx(l.length);
+      return [...l, ...added];
+    });
+  };
+
   const importM3uText = async (rawText) => {
     const mod = await loadTools();
     const entries = mod.parseM3u(rawText);
@@ -270,7 +297,30 @@ export default function MediaPlayer({ win, props }) {
     }
   };
 
-  useEffect(() => { if (cur && v.current) { wire(); v.current.load(); v.current.play().catch(() => {}); } }, [cur?.id]); // eslint-disable-line
+  useEffect(() => {
+    if (!cur) return;
+    let cancelled = false;
+    (async () => {
+      if (!cur.url && cur.getFile) {
+        try {
+          const f = await cur.getFile();
+          if (cancelled) return;
+          const u = URL.createObjectURL(f);
+          urls.current.push(u);
+          setList((l) => l.map((it) => (it.id === cur.id ? { ...it, file: f, url: u, video: f.type?.startsWith('video/') || VIDEO.includes(fs.ext(it.name)) } : it)));
+        } catch (e) {
+          if (!cancelled) os.msg({ icon: 'error', title: 'Media Player', text: `Could not open "${cur.name}": ${e.message}` });
+        }
+        return;
+      }
+      if (cur.url && v.current) {
+        wire();
+        v.current.load();
+        v.current.play().catch(() => {});
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [cur?.id, cur?.url]); // eslint-disable-line
 
   const ended = () => { if (loop && list.length === 1) { v.current.currentTime = 0; v.current.play(); } else if (idx < list.length - 1) setIdx(idx + 1); else if (loop) setIdx(0); else setPlaying(false); };
   const fullscreen = () => { try { v.current.requestFullscreen(); } catch { os.msg({ icon: 'info', text: 'Full screen is not available.' }); } };
@@ -294,6 +344,7 @@ export default function MediaPlayer({ win, props }) {
     { label: '&File', items: [
       { label: '&Open (Drive C:)...', onClick: openFile },
       { label: 'Open from &Local PC...', onClick: openFromPC },
+      { label: 'Mount PC Media &Folder (Zero-Copy)...', onClick: mountMediaFolder },
       { label: '&Save Current Track to C:\\Media', disabled: !cur?.file || !!cur?.fsId, onClick: saveCurrentToMediaFolder },
       { sep: true },
       { label: '&Import M3U Playlist...', onClick: importM3uFromPC },
@@ -423,7 +474,7 @@ export default function MediaPlayer({ win, props }) {
               <Icon name={it.video ? 'video' : 'audio'} size={16} />
               <span style={{ flex: 1 }}>{it.name}</span>
               <span style={{ color: i === idx ? '#fff' : (winampSkin ? '#00b048' : '#808080'), fontSize: 10 }}>
-                {it.fsId ? 'C:\\' : it.remoteUrl ? 'Stream' : 'Local PC'}
+                {it.fsId ? 'C:\\' : it.remoteUrl ? 'Stream' : it.driveLabel || 'Local PC'}
               </span>
             </div>
           ))}

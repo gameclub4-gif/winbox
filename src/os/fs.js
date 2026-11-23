@@ -56,10 +56,23 @@ function wavBlob(notes) {
 
 const APP_EXES = {
   'notepad.exe': 'notepad', 'wordpad.exe': 'wordpad', 'write.exe': 'wordpad', 'calc.exe': 'calc', 'mspaint.exe': 'paint', 'explorer.exe': 'explorer',
-  'control.exe': 'control', 'mplayer.exe': 'media', 'command.com': 'dos', 'winmine.exe': 'minesweeper',
+  'control.exe': 'control', 'mplayer.exe': 'media', 'sndrec32.exe': 'sndrec', 'command.com': 'dos', 'winmine.exe': 'minesweeper',
   'sol.exe': 'solitaire', 'freecell.exe': 'freecell', 'mshearts.exe': 'hearts', 'tetris.exe': 'tetris',
-  'snake.exe': 'snake', 'iexplore.exe': 'browser', 'dosgames.exe': 'dosgames', 'winhelp.exe': 'help',
+  'snake.exe': 'snake', 'iexplore.exe': 'browser', 'dosgames.exe': 'dosgames', 'drives.exe': 'drives', 'sysmon.exe': 'sysmon', 'winhelp.exe': 'help',
 };
+
+function ensureSystemFolders() {
+  const t = Date.now();
+  const ensure = (id, name, parent) => {
+    if (!nodes.has(id)) {
+      const f = { id, name, parent, type: 'folder', data: undefined, size: 0, created: t, modified: t };
+      nodes.set(id, f);
+      idbPut(f);
+    }
+  };
+  ensure('bios', 'BIOS', ROOT);
+  ensure('saves', 'Saves', ROOT);
+}
 
 async function seed() {
   const t = Date.now();
@@ -72,6 +85,8 @@ async function seed() {
   mk('pf', 'Program Files', ROOT, 'folder');
   mk('docs', 'My Documents', ROOT, 'folder');
   mk('games', 'DOS Games', ROOT, 'folder');
+  mk('bios', 'BIOS', ROOT, 'folder');
+  mk('saves', 'Saves', ROOT, 'folder');
   mk('temp', 'Temp', 'win', 'folder');
   Object.entries(APP_EXES).forEach(([n, a], i) => mk('exe' + i, n, n === 'command.com' ? 'win' : 'win', 'file', 'app:' + a, 'application/x-app'));
   mk('welcome', 'Welcome.txt', 'docs', 'file',
@@ -105,6 +120,7 @@ export function init() {
         all.forEach((n) => nodes.set(n.id, n));
       } catch (e) { db = null; console.warn('Using in-memory filesystem:', e.message); }
       if (!nodes.has(ROOT)) await seed();
+      else ensureSystemFolders();
       emit();
     })();
   }

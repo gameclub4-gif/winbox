@@ -16,6 +16,9 @@ export const APPS = {
   recycle: def('Recycle Bin', 'recycle', 560, 360, () => import('../apps/RecycleBin.jsx'), { single: true, minW: 320, minH: 200 }),
   dosgames: def('DOSBox & Retro Computers', 'dosgames', 880, 580, () => import('../apps/DosGames.jsx'), { single: true, minW: 380, minH: 320 }),
   inspector: def('Disk & ZIP Inspector', 'zip', 660, 480, () => import('../apps/DiskInspector.jsx'), { single: true, minW: 420, minH: 340 }),
+  drives: def('Virtual Drive Manager', 'drive', 640, 480, () => import('../apps/DriveManager.jsx'), { single: true, minW: 420, minH: 320 }),
+  sndrec: def('Sound Recorder', 'sound', 390, 255, () => import('../apps/SoundRecorder.jsx'), { single: true, minW: 320, minH: 220 }),
+  sysmon: def('System Resource Monitor', 'system', 560, 440, () => import('../apps/ResourceMonitor.jsx'), { single: true, minW: 380, minH: 300 }),
   help: def('Windows Help', 'help', 560, 400, () => import('../apps/Help.jsx'), { single: true, minW: 320, minH: 220 }),
   solitaire: def('Solitaire', 'solitaire', 700, 520, () => import('../apps/Solitaire.jsx'), { minW: 560, minH: 420 }),
   minesweeper: def('Minesweeper', 'minesweeper', 200, 290, () => import('../apps/Minesweeper.jsx'), { resizable: false }),
@@ -31,5 +34,7 @@ export const ALIASES = {
   mplayer: 'media', mplayer2: 'media', wmplayer: 'media', command: 'dos', cmd: 'dos', dos: 'dos', iexplore: 'browser', browser: 'browser',
   ie: 'browser', sol: 'solitaire', solitaire: 'solitaire', winmine: 'minesweeper', minesweeper: 'minesweeper', freecell: 'freecell',
   mshearts: 'hearts', hearts: 'hearts', tetris: 'tetris', snake: 'snake', dosbox: 'dosgames', dosgames: 'dosgames', amiga: 'dosgames', retro: 'dosgames',
-  inspector: 'inspector', winzip: 'inspector', disktool: 'inspector', floppy: 'inspector', winhelp: 'help', help: 'help',
+  inspector: 'inspector', winzip: 'inspector', disktool: 'inspector', floppy: 'inspector',
+  drives: 'drives', drivemgr: 'drives', sndrec: 'sndrec', sndrec32: 'sndrec', recorder: 'sndrec', sysmon: 'sysmon', taskmgr: 'sysmon', monitor: 'sysmon',
+  winhelp: 'help', help: 'help',
 };

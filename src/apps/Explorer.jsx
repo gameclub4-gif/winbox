@@ -5,10 +5,13 @@ import Icon, { iconForFile } from '../os/icons.jsx';
 import * as fs from '../os/fs.js';
 import { newItem, deleteNodes, renameNode, showProps, importFiles, fmtSize } from '../os/actions.js';
 import { setSettings } from '../os/settings.js';
+import { pickLocalDirectory } from '../utils/localFolder.js';
+import { useVirtualDrives, mountRemovableFolder } from '../utils/virtualDrives.js';
 
 export default function Explorer({ win, props }) {
   const os = useOS();
   fs.useFS();
+  const vd = useVirtualDrives();
   const start = props.folderId === undefined ? fs.ROOT : props.folderId;
   const [hist, setHist] = useState({ list: [start], i: 0 });
   const cwd = hist.list[hist.i];
@@ -46,7 +49,17 @@ export default function Explorer({ win, props }) {
   let entries;
   if (searching) entries = fs.search(q.trim()).map((n) => ({ key: n.id, name: n.name, node: n, icon: iconForFile(n), where: fs.pathOf(n.parent) }));
   else if (cwd === null) entries = [
+    { key: 'a', name: vd.floppyA ? `(A:) ${vd.floppyA.name}` : '(A:) 3.5" Floppy', icon: 'zip', typeLabel: vd.floppyA ? 'Floppy (Mounted)' : '3.5" Floppy Drive', open: () => os.open('drives') },
     { key: 'c', name: '(C:)', icon: 'drive', typeLabel: 'Local Disk', open: () => go(fs.ROOT), size: null },
+    { key: 'd', name: vd.cdromD ? `(D:) ${vd.cdromD.name}` : '(D:) CD-ROM', icon: 'media', typeLabel: vd.cdromD ? 'Optical Disc (Mounted)' : 'CD-ROM Drive', open: () => os.open('drives') },
+    ...vd.removable.map((r) => ({
+      key: r.id,
+      name: `(${r.letter}) ${r.name}`,
+      icon: r.kind === 'folder' ? 'folderOpen' : 'drive',
+      typeLabel: r.kind === 'folder' ? `PC Folder (${r.fileCount} files)` : 'Removable Disk',
+      open: () => os.open('drives'),
+    })),
+    { key: 'drives', name: 'Virtual Drive Manager', icon: 'drive', typeLabel: 'System Utility', open: () => os.open('drives') },
     { key: 'cp', name: 'Control Panel', icon: 'control', typeLabel: 'System Folder', open: () => os.open('control') },
     { key: 'rb', name: 'Recycle Bin', icon: fs.trashList().length ? 'recycleFull' : 'recycle', typeLabel: 'System Folder', open: () => os.open('recycle') },
   ];
@@ -58,6 +71,13 @@ export default function Explorer({ win, props }) {
   const paste = () => { try { const made = fs.paste(cwd); setSel(made.map((n) => n.id)); } catch (e) { os.msg({ icon: 'error', text: e.message }); } };
   const canPaste = cwd && fs.clip.ids.length > 0;
   const importIt = async (e) => { const files = [...e.target.files]; e.target.value = ''; if (files.length) await importFiles(os, files, cwd || fs.ROOT); };
+  const mountLocalFolder = async () => {
+    const res = await pickLocalDirectory();
+    if (!res) return;
+    const rem = mountRemovableFolder(res);
+    os.msg({ icon: 'info', title: 'Local Folder Mounted', text: `Mounted "${res.name}" as ${rem.letter} (${res.entries.length} file(s), zero-copy).\nOpening Virtual Drive Manager...` });
+    os.open('drives');
+  };
   const lastClick = useRef(null);
 
   const clickItem = (e, en) => {
@@ -176,7 +196,13 @@ export default function Explorer({ win, props }) {
       { label: 'Select &All', shortcut: 'Ctrl+A', onClick: () => setSel(entries.map((x) => x.key)) },
       { label: '&Invert Selection', onClick: () => setSel(entries.filter((x) => !sel.includes(x.key)).map((x) => x.key)) }] },
     { label: '&View', items: [{ label: '&Folders', checked: tree, onClick: () => setTree(!tree) }, { sep: true }, ...viewMenu, { sep: true }, { label: '&Refresh', shortcut: 'F5', onClick: () => force((x) => x + 1) }] },
-    { label: '&Tools', items: [{ label: '&Find Files or Folders...', shortcut: 'Ctrl+F', onClick: () => setFind(true) }, { label: '&Go to...', onClick: () => document.getElementById('addr' + win.id)?.focus() }] },
+    { label: '&Tools', items: [
+      { label: '&Find Files or Folders...', shortcut: 'Ctrl+F', onClick: () => setFind(true) },
+      { label: '&Go to...', onClick: () => document.getElementById('addr' + win.id)?.focus() },
+      { sep: true },
+      { label: 'Mount &Local PC Folder (Zero-Copy)...', onClick: mountLocalFolder },
+      { label: '&Virtual Drive Manager...', onClick: () => os.open('drives') },
+    ] },
     { label: '&Help', items: [{ label: '&Help Topics', onClick: () => os.open('help') }, { label: '&About Windows 95', onClick: () => os.msg({ icon: 'info', title: 'About Windows 95', text: 'Windows 95 Smart Edition\nVersion 4.00.950 (browser build)\n\nVirtual drive C: is stored in your browser using IndexedDB.' }) }] },
   ];
 

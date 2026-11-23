@@ -4,7 +4,7 @@ import * as fs from '../os/fs.js';
 import { saveLocalFile } from '../os/localFiles.js';
 import { setSettings } from '../os/settings.js';
 
-const BACKUP_LS_KEYS = ['win95.smart.settings.v1', 'win95.bookmarks', 'win95-mp-playlist', 'win95.user.romLinks.v1'];
+const BACKUP_LS_KEYS = ['win95.smart.settings.v1', 'win95.bookmarks', 'win95-mp-playlist', 'win95.user.romLinks.v1', 'win95.user.romProfiles.v1'];
 const UNSAFE_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
 
 export async function createVirtualPCBackup() {
