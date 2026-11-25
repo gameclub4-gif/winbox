@@ -145,6 +145,96 @@ async function startServer() {
     }
   });
 
+  const MAX_BROWSE_HTML = 15 * 1024 * 1024;
+  const MAX_BROWSE_BIN = 64 * 1024 * 1024;
+
+  const escAttr = (s: string) =>
+    s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  const NAV_BRIDGE_SCRIPT = `<script>(function(){try{document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a[href]'):null;if(!a)return;var h=a.getAttribute('href')||'';if(!h||h.charAt(0)==='#'||/^(javascript:|mailto:|tel:|data:|blob:)/i.test(h))return;if(a.hasAttribute('download')||a.target==='_blank')return;e.preventDefault();window.parent.postMessage({type:'win95-browser-nav',url:a.href},'*');},true);document.addEventListener('submit',function(e){var f=e.target;if(!f||f.tagName!=='FORM')return;var m=(f.method||'get').toLowerCase();if(m!=='get')return;e.preventDefault();var u=new URL(f.action||location.href);var fd=new FormData(f);fd.forEach(function(v,k){if(typeof v==='string')u.searchParams.set(k,v);});window.parent.postMessage({type:'win95-browser-nav',url:u.toString()},'*');},true);}catch(_){}})();</script>`;
+
+  app.get('/api/browse', async (req, res) => {
+    const rawUrl = typeof req.query.url === 'string' ? req.query.url.trim() : '';
+    if (!rawUrl || rawUrl.length > 2048) {
+      res.status(400).json({ error: 'Missing or invalid url query parameter.' });
+      return;
+    }
+
+    try {
+      const { response, finalUrl } = await fetchWithSafeRedirects(rawUrl, 5);
+      const rawType = response.headers.get('content-type') || 'application/octet-stream';
+      const ctype = rawType.toLowerCase();
+      const isPdf = ctype.includes('application/pdf') || /\.pdf([?#].*)?$/i.test(finalUrl);
+      const isHtml = !isPdf && (ctype.includes('text/html') || ctype.includes('application/xhtml'));
+
+      res.setHeader('X-Final-Url', finalUrl);
+      res.setHeader('Access-Control-Expose-Headers', 'X-Final-Url, Content-Type');
+
+      if (isHtml) {
+        const buf = await response.arrayBuffer();
+        if (buf.byteLength > MAX_BROWSE_HTML) {
+          res.status(413).send('Page exceeds 15 MB limit.');
+          return;
+        }
+        let html = new TextDecoder('utf-8', { fatal: false }).decode(buf);
+        // Remove frame-blocking meta CSP if present
+        html = html.replace(/<meta[^>]+http-equiv\s*=\s*["']?content-security-policy["']?[^>]*>/gi, '');
+        const injection = `<base href="${escAttr(finalUrl)}" target="_self">${NAV_BRIDGE_SCRIPT}`;
+        if (/<head[^>]*>/i.test(html)) {
+          html = html.replace(/<head[^>]*>/i, (m) => m + injection);
+        } else if (/<html[^>]*>/i.test(html)) {
+          html = html.replace(/<html[^>]*>/i, (m) => m + `<head>${injection}</head>`);
+        } else {
+          html = `<!doctype html><html><head>${injection}</head><body>${html}</body></html>`;
+        }
+        res.status(response.status);
+        res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        res.send(html);
+        return;
+      }
+
+      const lenHeader = Number(response.headers.get('content-length') || 0);
+      if (lenHeader > MAX_BROWSE_BIN) {
+        res.status(413).json({ error: 'Remote resource exceeds 64 MB limit.' });
+        return;
+      }
+
+      res.status(response.status);
+      res.setHeader('Content-Type', isPdf ? 'application/pdf' : rawType);
+      if (!response.body) {
+        res.end();
+        return;
+      }
+
+      let received = 0;
+      const reader = response.body.getReader();
+      req.on('close', () => {
+        reader.cancel().catch(() => {});
+      });
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        received += value.byteLength;
+        if (received > MAX_BROWSE_BIN) {
+          reader.cancel().catch(() => {});
+          res.destroy();
+          return;
+        }
+        res.write(Buffer.from(value));
+      }
+      res.end();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : 'Unable to load URL';
+      if (!res.headersSent) {
+        res.status(400).setHeader('Content-Type', 'text/html; charset=utf-8').send(
+          `<!doctype html><html><body style="font-family:Tahoma,Arial,sans-serif;padding:24px;color:#000;background:#fff;"><h2>Cannot display page</h2><p>${escAttr(msg)}</p><p><code>${escAttr(rawUrl)}</code></p></body></html>`
+        );
+      } else {
+        res.end();
+      }
+    }
+  });
+
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },

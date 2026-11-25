@@ -134,7 +134,8 @@ export function OSProvider({ children }) {
       else if (IMG_EXT.includes(e)) a.open('paint', { fileId: n.id });
       else if (MEDIA_EXT.includes(e)) a.open('media', { fileId: n.id });
       else if (RETRO_EXT.includes(e)) a.open('dosgames', { fileId: n.id });
-      else if (e === 'html' || e === 'htm') a.open('browser', { url: fs.blobUrl({ ...n, mime: 'text/html' }), title: n.name });
+      else if (e === 'pdf') a.open('acrobat', { fsNodeId: n.id });
+      else if (e === 'html' || e === 'htm' || e === 'xhtml' || e === 'svg') a.open('browser', { fsNodeId: n.id });
       else if (TEXT_EXT.includes(e) || !e || (n.size || 0) < 1e6) a.open('notepad', { fileId: n.id });
       else a.msg({ icon: 'warning', title: 'Open With', text: `Windows cannot open this file:\n${n.name}` });
     };

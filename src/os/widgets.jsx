@@ -131,35 +131,95 @@ export function PromptBox({ opts, onDone }) {
 export function FileDialog({ opts, onDone }) {
   const os = useOS();
   fs.useFS();
-  const { mode = 'open', exts = null, name: initName = '', title, start = 'docs' } = opts;
+  const { mode = 'open', exts = null, name: initName = '', title, start = 'docs', allowLocal = false, formats = null, qualities = null, defaultQuality = 90 } = opts;
+  const initExt = (() => {
+    const e = fs.ext(initName);
+    if (formats?.length) {
+      const hit = formats.find((f) => f.ext === e);
+      return hit ? hit.ext : formats[0].ext;
+    }
+    return e || exts?.[0] || '';
+  })();
   const [cwd, setCwd] = useState(fs.get(start) ? start : fs.ROOT);
+  const [inLocal, setInLocal] = useState(false);
   const [name, setName] = useState(initName);
   const [sel, setSel] = useState(null);
+  const [fmtExt, setFmtExt] = useState(initExt);
+  const [quality, setQuality] = useState(defaultQuality);
   const fileInput = useRef();
-  const items = fs.children(cwd).filter((n) => n.type === 'folder' || !exts || exts.includes(fs.ext(n.name)));
+  const allowedExts = formats?.length ? formats.map((f) => f.ext) : exts;
+  const items = fs.children(cwd).filter((n) => n.type === 'folder' || !allowedExts || allowedExts.includes(fs.ext(n.name)));
   const cur = fs.get(cwd);
-  const accept = async (n) => {
+
+  const applyExtToName = (rawName, nextExt) => {
+    if (!nextExt) return rawName;
+    const trimmed = rawName.trim();
+    if (!trimmed) return `untitled.${nextExt}`;
+    const hasKnown = allowedExts?.includes(fs.ext(trimmed));
+    if (hasKnown) return trimmed.replace(/\.[^.]+$/, '.' + nextExt);
+    return trimmed.includes('.') ? trimmed.replace(/\.[^.]+$/, '.' + nextExt) : `${trimmed}.${nextExt}`;
+  };
+
+  const onFormatChange = (nextExt) => {
+    setFmtExt(nextExt);
+    setName((prev) => applyExtToName(prev, nextExt));
+  };
+
+  const accept = async (n, forceLocal = false) => {
     if (mode === 'open') { if (n) onDone(n); return; }
     let nm = name.trim();
     if (!nm) return;
-    if (exts && !fs.ext(nm) ) nm += '.' + exts[0];
+    let activeExt = fmtExt;
+    const typedExt = fs.ext(nm);
+    if (formats?.length) {
+      if (!typedExt) {
+        nm += '.' + activeExt;
+      } else if (typedExt !== activeExt) {
+        const matched = formats.find((f) => f.ext === typedExt);
+        if (matched) activeExt = matched.ext;
+        else nm = nm + '.' + activeExt;
+      }
+    } else if (exts && !typedExt) {
+      nm += '.' + exts[0];
+      activeExt = exts[0];
+    }
+
+    if (forceLocal || inLocal || sel === '__local__') {
+      onDone({ local: true, parent: cwd, name: nm, ext: activeExt || fs.ext(nm), quality });
+      return;
+    }
+
     const existing = fs.children(cwd).find((c) => c.name.toLowerCase() === nm.toLowerCase());
     if (existing?.type === 'folder') { setCwd(existing.id); setName(''); return; }
     if (existing) {
       const r = await os.msg({ title: 'Save As', icon: 'warning', text: `${nm} already exists.\nDo you want to replace it?`, buttons: ['Yes', 'No'] });
       if (r !== 'Yes') return;
     }
-    onDone({ parent: cwd, name: nm, existing });
+    onDone({ local: false, parent: cwd, name: nm, existing, ext: activeExt || fs.ext(nm), quality });
   };
-  const click = (n) => { setSel(n.id); if (n.type === 'file') setName(n.name); };
-  const dbl = (n) => { if (n.type === 'folder') { setCwd(n.id); setSel(null); } else if (mode === 'open') accept(n); else accept(); };
+
+  const click = (n) => {
+    setSel(n.id);
+    if (n.type === 'file') {
+      setName(n.name);
+      const e = fs.ext(n.name);
+      if (formats?.some((f) => f.ext === e)) setFmtExt(e);
+    }
+  };
+  const dbl = (n) => {
+    if (n.type === 'folder') { setCwd(n.id); setSel(null); }
+    else if (mode === 'open') accept(n);
+    else accept();
+  };
   const onOpen = () => {
-    const n = fs.get(sel);
     if (mode === 'open') {
+      const n = fs.get(sel);
       if (n?.type === 'folder') return setCwd(n.id);
       const byName = fs.children(cwd).find((c) => c.name.toLowerCase() === name.trim().toLowerCase());
       if (n || byName) accept(n?.type === 'file' ? n : byName);
-    } else accept();
+    } else {
+      accept(null, inLocal || sel === '__local__');
+    }
   };
   const upload = async (e) => {
     const f = e.target.files?.[0]; e.target.value = '';
@@ -170,34 +230,86 @@ export function FileDialog({ opts, onDone }) {
     const nm = await os.prompt({ title: 'New Folder', label: 'Folder name:', value: 'New Folder' });
     if (nm) try { fs.create({ name: nm, parent: cwd, type: 'folder' }); } catch (err) { os.msg({ icon: 'error', text: err.message }); }
   };
+
+  const qualityNote = (() => {
+    const e = (fmtExt || '').toLowerCase();
+    if (e === 'bmp') return 'Uncompressed 24-bit BMP';
+    if (e === 'gif') return quality >= 95 ? '256-color GIF + dither' : `${quality >= 85 ? 192 : quality >= 75 ? 128 : 64}-color GIF LZW`;
+    if (e === 'png') return quality === 100 ? 'Lossless RGBA PNG' : 'Indexed palette PNG';
+    if (e === 'jpg' || e === 'jpeg' || e === 'webp') return `${quality}% compression`;
+    return `${quality}%`;
+  })();
+
   return (
-    <Dialog title={title || (mode === 'open' ? 'Open' : 'Save As')} onClose={() => onDone(null)} width={440} className="file-dlg">
+    <Dialog title={title || (mode === 'open' ? 'Open' : 'Save As')} onClose={() => onDone(null)} width={450} className="file-dlg">
       <div className="fd-row">
         <label>{mode === 'open' ? 'Look in:' : 'Save in:'}</label>
-        <input className="field" readOnly value={fs.pathOf(cwd)} style={{ flex: 1 }} />
-        <button className="btn sq" title="Up one level" disabled={!cur?.parent} onClick={() => { setCwd(cur.parent); setSel(null); }}>⬑</button>
-        <button className="btn sq" title="Create new folder" onClick={newFolder}>✚</button>
+        <input className="field" readOnly value={inLocal ? 'Local (Download directly to your device)' : fs.pathOf(cwd)} style={{ flex: 1 }} />
+        <button
+          className="btn sq"
+          title={inLocal ? 'Back to Drive C:' : 'Up one level'}
+          disabled={!inLocal && !cur?.parent}
+          onClick={() => { if (inLocal) { setInLocal(false); setSel(null); } else { setCwd(cur.parent); setSel(null); } }}
+        >⬑</button>
+        <button className="btn sq" title="Create new folder" disabled={inLocal} onClick={newFolder}>✚</button>
       </div>
       <div className="field fd-list" tabIndex={0}>
-        {items.length === 0 && <div style={{ padding: 6, color: '#808080' }}>(This folder is empty)</div>}
-        {items.map((n) => (
-          <div key={n.id} className={'fd-item ' + (sel === n.id ? 'sel' : '')} onClick={() => click(n)} onDoubleClick={() => dbl(n)}>
-            <Icon name={iconForFile(n)} size={16} /><span>{n.name}</span>
-          </div>
-        ))}
+        {inLocal ? (
+          <>
+            <div className="fd-item" onClick={() => { setInLocal(false); setSel(null); }}>
+              <Icon name="drive" size={16} /><span>← Back to Drive C: ({fs.pathOf(cwd)})</span>
+            </div>
+            <div className="fd-item sel">
+              <Icon name="computer" size={16} /><span>Local — Save downloads directly to your PC</span>
+            </div>
+          </>
+        ) : (
+          <>
+            {mode === 'save' && allowLocal && (
+              <div
+                className={'fd-item ' + (sel === '__local__' ? 'sel' : '')}
+                onClick={() => setSel('__local__')}
+                onDoubleClick={() => { setInLocal(true); setSel(null); }}
+              >
+                <Icon name="computer" size={16} /><span><b>Local</b> (Download to device)</span>
+              </div>
+            )}
+            {items.length === 0 && !(mode === 'save' && allowLocal) && <div style={{ padding: 6, color: '#808080' }}>(This folder is empty)</div>}
+            {items.map((n) => (
+              <div key={n.id} className={'fd-item ' + (sel === n.id ? 'sel' : '')} onClick={() => click(n)} onDoubleClick={() => dbl(n)}>
+                <Icon name={iconForFile(n)} size={16} /><span>{n.name}</span>
+              </div>
+            ))}
+          </>
+        )}
       </div>
-      <div className="fd-row"><label style={{ width: 70 }}>File name:</label>
+      <div className="fd-row"><label style={{ width: 78 }}>File name:</label>
         <input className="field" style={{ flex: 1 }} value={name} onChange={(e) => setName(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && onOpen()} autoFocus />
-        <button className="btn" style={{ width: 70 }} onClick={onOpen}>{mode === 'open' ? 'Open' : 'Save'}</button>
+        <button className="btn" style={{ width: 74 }} onClick={onOpen}>{mode === 'open' ? 'Open' : 'Save'}</button>
       </div>
-      <div className="fd-row"><label style={{ width: 70 }}>Files of type:</label>
-        <input className="field" readOnly style={{ flex: 1 }} value={exts ? exts.map((e) => '*.' + e).join(', ') : 'All Files (*.*)'} />
-        <button className="btn" style={{ width: 70 }} onClick={() => onDone(null)}>Cancel</button>
+      <div className="fd-row"><label style={{ width: 78 }}>{mode === 'open' ? 'Files of type:' : 'Save as type:'}</label>
+        {formats?.length ? (
+          <select className="field" style={{ flex: 1 }} value={fmtExt} onChange={(e) => onFormatChange(e.target.value)}>
+            {formats.map((f) => <option key={f.ext} value={f.ext}>{f.label}</option>)}
+          </select>
+        ) : (
+          <input className="field" readOnly style={{ flex: 1 }} value={exts ? exts.map((e) => '*.' + e).join(', ') : 'All Files (*.*)'} />
+        )}
+        <button className="btn" style={{ width: 74 }} onClick={() => onDone(null)}>Cancel</button>
       </div>
+      {mode === 'save' && qualities?.length > 0 && (
+        <div className="fd-row">
+          <label style={{ width: 78 }}>Quality:</label>
+          <select className="field" style={{ width: 88 }} value={quality} onChange={(e) => setQuality(Number(e.target.value))}>
+            {qualities.map((q) => <option key={q} value={q}>{q}%</option>)}
+          </select>
+          <span style={{ color: '#505050', fontSize: 10 }}>{qualityNote}</span>
+        </div>
+      )}
       {mode === 'open' && (
         <div className="fd-row">
           <button className="btn" onClick={() => fileInput.current.click()}>Import from computer...</button>
-          <input ref={fileInput} type="file" hidden onChange={upload} accept={exts ? exts.map((e) => '.' + e).join(',') : undefined} />
+          <input ref={fileInput} type="file" hidden onChange={upload} accept={allowedExts ? allowedExts.map((e) => '.' + e).join(',') : undefined} />
         </div>
       )}
     </Dialog>

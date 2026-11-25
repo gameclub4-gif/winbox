@@ -106,6 +106,7 @@ function Win({ w, active, compact }) {
         className={`window ${active ? 'active' : ''} ${isMax ? 'max' : ''}`}
         style={{ left: w.x, top: w.y, width: w.w, height: w.h, zIndex: w.z, display: w.min ? 'none' : undefined }}
         onPointerDownCapture={() => os.focus(w.id)}
+        onContextMenu={(e) => e.stopPropagation()}
       >
         <div className="titlebar" onPointerDown={startDrag} onDoubleClick={(e) => { if (resizable && !e.target.closest('.tb-btn') && !e.target.closest('.sys-icon')) os.toggleMax(w.id); }}>
           <span className="sys-icon" onClick={sysMenu} onDoubleClick={(e) => { e.stopPropagation(); os.close(w.id); }}><Icon name={w.icon} size={16} /></span>

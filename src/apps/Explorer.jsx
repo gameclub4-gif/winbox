@@ -114,6 +114,7 @@ export default function Explorer({ win, props }) {
       { label: '&Open', bold: true, onClick: () => openEntry(en) },
       isInspectable && { label: '&Inspect ZIP / Floppy...', onClick: () => os.open('inspector', { fileId: en.node.id }) },
       isImg && { label: 'Set as Desktop &Wallpaper', onClick: () => setSettings({ wallpaper: 'fs:' + en.node.id, wallpaperMode: 'stretch' }) },
+      en.node.type === 'file' && ['pdf', 'html', 'htm', 'xhtml', 'txt', 'md', 'log', 'rtf', 'zip', 'png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp', 'svg'].includes(fileExt) && { label: 'Open in &Acrobat Reader 5.0', onClick: () => os.open('acrobat', { fsNodeId: en.node.id }) },
       en.node.type === 'file' && { label: 'Open in &WordPad', onClick: () => os.open('wordpad', { fileId: en.node.id }) },
       en.node.type === 'file' && { label: 'Open in &Notepad', onClick: () => os.open('notepad', { fileId: en.node.id }) },
       en.node.type === 'file' && { label: '&Download to computer', onClick: () => fs.downloadNode(en.node) },

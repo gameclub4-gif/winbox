@@ -9,6 +9,7 @@ export const APPS = {
   wordpad: def('Document - WordPad', 'wordpad', 720, 520, () => import('../apps/WordPad.jsx'), { minW: 360, minH: 260 }),
   calc: def('Calculator', 'calc', 260, 262, () => import('../apps/Calculator.jsx'), { minW: 240, minH: 240 }),
   paint: def('untitled - Paint', 'paint', 720, 520, () => import('../apps/Paint.jsx'), { minW: 380, minH: 300 }),
+  acrobat: def('Adobe Acrobat Reader 5.0', 'acrobat', 860, 580, () => import('../apps/AcrobatReader.jsx'), { minW: 480, minH: 360 }),
   browser: def('Internet Browser', 'browser', 760, 520, () => import('../apps/Browser.jsx'), { minW: 320, minH: 240 }),
   media: def('Media Player', 'media', 420, 380, () => import('../apps/MediaPlayer.jsx'), { minW: 320, minH: 260 }),
   dos: def('MS-DOS Prompt', 'dos', 640, 400, () => import('../apps/DosPrompt.jsx'), { minW: 300, minH: 180 }),
@@ -31,6 +32,7 @@ export const APPS = {
 // Command-line / Run aliases
 export const ALIASES = {
   notepad: 'notepad', wordpad: 'wordpad', write: 'wordpad', calc: 'calc', calculator: 'calc', mspaint: 'paint', paint: 'paint', explorer: 'explorer', control: 'control',
+  acrobat: 'acrobat', acrord32: 'acrobat', acroread: 'acrobat', pdf: 'acrobat',
   mplayer: 'media', mplayer2: 'media', wmplayer: 'media', command: 'dos', cmd: 'dos', dos: 'dos', iexplore: 'browser', browser: 'browser',
   ie: 'browser', sol: 'solitaire', solitaire: 'solitaire', winmine: 'minesweeper', minesweeper: 'minesweeper', freecell: 'freecell',
   mshearts: 'hearts', hearts: 'hearts', tetris: 'tetris', snake: 'snake', dosbox: 'dosgames', dosgames: 'dosgames', amiga: 'dosgames', retro: 'dosgames',

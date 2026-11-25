@@ -407,7 +407,7 @@ export function htmlToRtf(html) {
  */
 export function sanitizeHtmlForEditor(rawHtml) {
   const doc = new DOMParser().parseFromString(rawHtml || '', 'text/html');
-  const blocked = doc.querySelectorAll('script, style, iframe, object, embed, link, meta, base, form');
+  const blocked = doc.querySelectorAll('script, style, iframe, object, embed, link, meta, base, form, svg');
   blocked.forEach((el) => el.remove());
 
   const cleanAttrs = (el) => {
@@ -416,11 +416,19 @@ export function sanitizeHtmlForEditor(rawHtml) {
       const val = (attr.value || '').trim();
       if (nm.startsWith('on') || nm === 'srcdoc') {
         el.removeAttribute(attr.name);
-      } else if ((nm === 'href' || nm === 'src') && /^javascript:/i.test(val)) {
-        el.removeAttribute(attr.name);
+      } else if (nm === 'style') {
+        if (/expression\s*\(|javascript:|vbscript:|-moz-binding|@import/i.test(val)) {
+          el.removeAttribute(attr.name);
+        }
+      } else if (nm === 'href') {
+        if (/^(javascript|vbscript|data):/i.test(val)) el.removeAttribute(attr.name);
+      } else if (nm === 'src') {
+        const isSafeDataImg = /^data:image\/(png|jpe?g|gif|webp|bmp|x-icon|svg\+xml);base64,/i.test(val);
+        const isSafeUrl = /^(https?:|blob:)/i.test(val) || !/^[a-z][a-z0-9+.-]*:/i.test(val);
+        if (!isSafeDataImg && !isSafeUrl) el.removeAttribute(attr.name);
       }
     }
-    for (const child of el.children) cleanAttrs(child);
+    for (const child of [...el.children]) cleanAttrs(child);
   };
   cleanAttrs(doc.body);
   const html = doc.body.innerHTML.trim();

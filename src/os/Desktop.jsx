@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, lazy, Suspense } from 'react';
 import { useOS, useOSState, TASKBAR_H } from './OS.jsx';
 import Win from './Window.jsx';
 import Icon, { iconForFile } from './icons.jsx';
@@ -6,6 +6,8 @@ import { MenuList, ContextMenu, MsgBox, PromptBox, FileDialog, Dialog } from './
 import { useSettings, setSettings, themeVars, BLISS, PATTERNS } from './settings.js';
 import * as fs from './fs.js';
 import { newItem, deleteNodes, renameNode, showProps, importFiles } from './actions.js';
+
+const SmartTransferToastHost = lazy(() => import('./smartTransferUI.jsx').then((m) => ({ default: m.SmartTransferToastHost })));
 
 const CELL_W = 80, CELL_H = 78;
 
@@ -124,6 +126,7 @@ export default function Desktop() {
       { id: 'paint', label: 'Paint', icon: 'paint', open: () => os.open('paint'), sys: true },
       { id: 'notepad', label: 'Notepad', icon: 'notepad', open: () => os.open('notepad'), sys: true },
       { id: 'wordpad', label: 'WordPad', icon: 'wordpad', open: () => os.open('wordpad'), sys: true },
+      { id: 'acrobat', label: 'Acrobat Reader 5.0', icon: 'acrobat', open: () => os.open('acrobat'), sys: true },
       { id: 'calc', label: 'Calculator', icon: 'calc', open: () => os.open('calc'), sys: true },
       { id: 'media', label: 'Media Player', icon: 'media', open: () => os.open('media'), sys: true },
       { id: 'dos', label: 'MS-DOS Prompt', icon: 'dos', open: () => os.open('dos'), sys: true },
@@ -178,6 +181,7 @@ export default function Desktop() {
     os.showMenu(e.clientX, e.clientY, m);
   };
   const deskMenu = (e) => {
+    if (e.target !== e.currentTarget) return;
     e.preventDefault();
     os.showMenu(e.clientX, e.clientY, [
       { label: 'Arrange &Icons', sub: [{ label: 'by &Name', checked: settings.arrange === 'name', onClick: () => setSettings({ arrange: 'name', iconPos: {} }) }, { label: 'by &Type', checked: settings.arrange === 'type', onClick: () => setSettings({ arrange: 'type', iconPos: {} }) }] },
@@ -213,11 +217,11 @@ export default function Desktop() {
   const app = (id, label, icon) => ({ label, icon, onClick: go(() => os.open(id)) });
   const startItems = [
     { label: '&Programs', icon: 'programs', sub: [
-      { label: 'Accessories', icon: 'folder', sub: [app('notepad', 'Notepad', 'notepad'), app('wordpad', 'WordPad', 'wordpad'), app('paint', 'Paint', 'paint'), app('calc', 'Calculator', 'calc'), app('media', 'Media Player', 'media'), app('sndrec', 'Sound Recorder', 'sound'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('dos', 'MS-DOS Prompt', 'dos')] },
+      { label: 'Accessories', icon: 'folder', sub: [app('acrobat', 'Acrobat Reader 5.0', 'acrobat'), app('notepad', 'Notepad', 'notepad'), app('wordpad', 'WordPad', 'wordpad'), app('paint', 'Paint', 'paint'), app('calc', 'Calculator', 'calc'), app('media', 'Media Player', 'media'), app('sndrec', 'Sound Recorder', 'sound'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('dos', 'MS-DOS Prompt', 'dos')] },
       { label: 'System Tools', icon: 'folder', sub: [app('drives', 'Virtual Drive Manager', 'drive'), app('sysmon', 'Resource Monitor', 'system'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('recycle', 'Cache & Recycle Bin', 'recycle')] },
       { label: 'Games', icon: 'folder', sub: [app('solitaire', 'Solitaire', 'solitaire'), app('minesweeper', 'Minesweeper', 'minesweeper'), app('freecell', 'FreeCell', 'freecell'), app('hearts', 'Hearts', 'hearts'), app('tetris', 'Tetris', 'tetris'), app('snake', 'Snake', 'snake'), { sep: true }, app('dosgames', 'DOSBox & Retro Computers', 'dosgames')] },
       { sep: true },
-      app('dosgames', 'DOSBox & Retro Computers', 'dosgames'), app('drives', 'Virtual Drive Manager', 'drive'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('browser', 'Internet Browser', 'browser'), app('dos', 'MS-DOS Prompt', 'dos'), app('explorer', 'Windows Explorer', 'explorer'),
+      app('acrobat', 'Acrobat Reader 5.0', 'acrobat'), app('dosgames', 'DOSBox & Retro Computers', 'dosgames'), app('drives', 'Virtual Drive Manager', 'drive'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('browser', 'Internet Browser', 'browser'), app('dos', 'MS-DOS Prompt', 'dos'), app('explorer', 'Windows Explorer', 'explorer'),
     ] },
     { label: '&Documents', icon: 'documents', sub: [{ label: 'My Documents', icon: 'folder', onClick: go(() => os.open('explorer', { folderId: 'docs' })) }, { sep: true }, ...(docs.length ? docs.map((n) => ({ label: n.name, icon: iconForFile(n), onClick: go(() => os.openNode(n)) })) : [{ label: '(Empty)', disabled: true }])] },
     { label: '&Settings', icon: 'settings', sub: [app('control', 'Control Panel', 'control'), { label: 'Display...', icon: 'display', onClick: go(() => os.open('control', { applet: 'display' })) }, { label: 'Sounds...', icon: 'sound', onClick: go(() => os.open('control', { applet: 'sounds' })) }, { label: 'Date/Time...', icon: 'clock', onClick: go(() => os.open('control', { applet: 'datetime' })) }] },
@@ -236,8 +240,8 @@ export default function Desktop() {
   if (st.phase === 'off') return <OffScreen onPower={os.powerOn} />;
 
   return (
-    <div className={'w95 ' + (st.compact ? 'compact' : '')} style={themeVars(settings)} onContextMenu={(e) => e.preventDefault()}>
-      <div className="desktop" style={wallStyle} onPointerDown={() => setSel([])} onContextMenu={deskMenu}
+    <div className={'w95 ' + (st.compact ? 'compact' : '')} style={themeVars(settings)}>
+      <div className="desktop" style={wallStyle} onPointerDown={(e) => { if (e.target === e.currentTarget) setSel([]); }} onContextMenu={deskMenu}
         onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files?.length) importFiles(os, [...e.dataTransfer.files], 'desktop'); }}>
         {items.map((it, i) => {
           const p = drag?.id === it.id ? drag : posOf(it, i);
@@ -250,10 +254,19 @@ export default function Desktop() {
           );
         })}
         {st.wins.map((w) => <Win key={w.id} w={w} active={st.active === w.id} compact={st.compact} />)}
+        <Suspense fallback={null}>
+          <SmartTransferToastHost os={os} />
+        </Suspense>
       </div>
 
       <div className="taskbar" onContextMenu={taskbarMenu}>
         <button ref={startRef} className={'btn start-btn ' + (st.startOpen ? 'pressed' : '')} onClick={() => os.setStart(!st.startOpen)}><Icon name="flag" size={18} /><b>Start</b></button>
+        <div className="tb-sep" />
+        <div className="quick-launch">
+          <button className="ql-btn" title="Show Desktop" onClick={os.minimizeAll}><Icon name="display" size={16} /></button>
+          <button className="ql-btn" title="Internet Browser" onClick={() => os.open('browser')}><Icon name="browser" size={16} /></button>
+          <button className="ql-btn" title="Adobe Acrobat Reader 5.0" onClick={() => os.open('acrobat')}><Icon name="acrobat" size={16} /></button>
+        </div>
         <div className="tb-sep" />
         <div className="tasks">
           {st.wins.map((w) => (

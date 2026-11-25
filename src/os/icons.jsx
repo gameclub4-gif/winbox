@@ -107,6 +107,20 @@ const ICONS = {
   speakerMute: <><path d="M3 11h5l6-5v20l-6-5H3z" fill={L} stroke={S} /><path d="M18 11l8 10M26 11l-8 10" stroke={R} strokeWidth="2" /></>,
   fullscreen: <><path d="M4 4h9M4 4v9M28 4h-9M28 4v9M4 28h9M4 28v-9M28 28h-9M28 28v-9" stroke={S} strokeWidth="3" fill="none" /></>,
   wordpad: <><rect x="5" y="3" width="18" height="25" fill={W} stroke={S} /><rect x="5" y="3" width="18" height="4" fill={B} /><path d="M8 11h10M8 15h12M8 19h8M8 23h10" stroke={G} /><path d="M25 6l4 4-10 14-4 1 1-4z" fill="#e0a020" stroke={S} /><path d="M23 8l4 4" stroke={B} strokeWidth="1.5" /></>,
+  acrobat: <>
+    <path d="M5 2h15l7 7v21H5z" fill={W} stroke={S} />
+    <path d="M20 2v7h7" fill={L} stroke={S} />
+    <rect x="3" y="18" width="26" height="10" fill="#cc0000" stroke={S} />
+    <path d="M15.5 6.5c1.3 0 1.4 3.4-.3 6.8-1.6 3.2-4.6 6.2-6.2 5.4-1.2-.6.4-2.5 3.6-3.7 3.8-1.4 8.8-1.4 10.6.4 1.1 1.1-.1 2.5-2.1 1.7-2-.8-4.5-4.3-5.8-8.2-.4-1.3-.3-2.4.2-2.4z" fill="none" stroke="#cc0000" strokeWidth="1.7" />
+    <text x="16" y="25.5" fontSize="7.5" fontWeight="bold" textAnchor="middle" fill={W} fontFamily="Arial, sans-serif">PDF</text>
+  </>,
+  pdf: <>
+    <path d="M6 2h14l6 6v22H6z" fill={W} stroke={S} />
+    <path d="M20 2v6h6" fill={L} stroke={S} />
+    <rect x="6" y="18" width="20" height="9" fill="#cc0000" />
+    <path d="M16 9c.9 0 .9 2.4-.2 4.6-1 2.1-3.1 4-4.2 3.5-.8-.4.3-1.6 2.4-2.4 2.5-.9 5.8-.9 7 .3.7.7-.1 1.6-1.4 1.1-1.3-.5-3-2.8-3.8-5.4-.3-.9-.2-1.7.2-1.7z" fill="none" stroke="#cc0000" strokeWidth="1.3" />
+    <text x="16" y="25" fontSize="7" fontWeight="bold" textAnchor="middle" fill={W} fontFamily="Arial, sans-serif">PDF</text>
+  </>,
 };
 export default function Icon({ name, size = 32, style, className }) {
   const body = ICONS[name] || ICONS.file;
@@ -119,6 +133,7 @@ export default function Icon({ name, size = 32, style, className }) {
 export function iconForFile(n) {
   if (n.type === 'folder') return 'folder';
   const e = n.name.split('.').pop().toLowerCase();
+  if (e === 'pdf') return 'pdf';
   if (e === 'rtf') return 'wordpad';
   if (['txt', 'md', 'log', 'ini', 'cfg', 'bat', 'json', 'js', 'css', 'html', 'htm', 'csv', 'xml', 'inf'].includes(e)) return 'text';
   if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'].includes(e)) return 'image';
