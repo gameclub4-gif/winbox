@@ -12,7 +12,7 @@ export const TASKBAR_H = 30;
 const TEXT_EXT = ['txt', 'md', 'log', 'ini', 'cfg', 'bat', 'json', 'js', 'css', 'csv', 'xml', 'inf', 'sys', 'nfo'];
 const IMG_EXT = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'];
 const MEDIA_EXT = ['wav', 'mp3', 'ogg', 'm4a', 'flac', 'aac', 'mp4', 'webm', 'mov', 'ogv', 'mkv'];
-const RETRO_EXT = ['zip', 'jsdos', 'img', 'ima', 'vfd', 'iso', 'cue', 'bin', 'adf', 'ipf', 'dms', 'lha', 'hdf', 'dsk', 'sna', 'cdt', 'voc', 'd64', 'd71', 'd81', 't64', 'prg', 'crt', 'tap', 'tzx', 'z80', 'trd', 'scl', 'st', 'msa', 'stx', 'dim'];
+const RETRO_EXT = ['zip', '7z', 'jsdos', 'img', 'ima', 'vfd', 'iso', 'cue', 'bin', 'adf', 'ipf', 'dms', 'lha', 'hdf', 'dsk', 'sna', 'cdt', 'voc', 'd64', 'd71', 'd81', 't64', 'prg', 'crt', 'tap', 'tzx', 'z80', 'trd', 'scl', 'st', 'msa', 'stx', 'dim', 'sts', 'nes', 'fds', 'unif', 'unf', 'sfc', 'smc', 'fig', 'swc', 'md', 'gen', 'smd', '32x', 'sms', 'gg', 'sg', 'pce', 'ccd', 'gb', 'gbc', 'gba', 'fbf', 'neo', 'hfv', 'toast', 'sit', 'hqx'];
 
 export function OSProvider({ children }) {
   const [wins, setWins] = useState([]);
@@ -38,11 +38,12 @@ export function OSProvider({ children }) {
     a.open = (appId, props = {}, opts = {}) => {
       const app = APPS[appId];
       if (!app) { a.msg({ icon: 'error', text: `Cannot find the program "${appId}".` }); return null; }
+      const mergedProps = { ...(app.defaultProps || {}), ...props };
       if (app.single) {
         const ex = R.wins.find((w) => w.appId === appId);
         if (ex) {
           a.focus(ex.id);
-          upd(ex.id, (w) => ({ props: { ...w.props, ...props }, nonce: (w.nonce || 0) + 1 }));
+          upd(ex.id, (w) => ({ props: { ...w.props, ...mergedProps }, nonce: (w.nonce || 0) + 1 }));
           return ex.id;
         }
       }
@@ -51,7 +52,7 @@ export function OSProvider({ children }) {
       const off = (R.opened++ % 8) * 26;
       const x = Math.max(0, Math.min(36 + off, vw - w)), y = Math.max(0, Math.min(24 + off, vh - h));
       const id = R.seq++;
-      setWins((ws) => [...ws, { id, appId, title: app.title, icon: app.icon, x, y, w, h, min: false, max: !!opts.max, z: ++R.z, props, nonce: 0 }]);
+      setWins((ws) => [...ws, { id, appId, title: app.title, icon: app.icon, x, y, w, h, min: false, max: !!opts.max, z: ++R.z, props: mergedProps, nonce: 0 }]);
       setStartOpen(false);
       play('open');
       return id;

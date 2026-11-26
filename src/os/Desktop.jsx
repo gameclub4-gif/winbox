@@ -6,6 +6,7 @@ import { MenuList, ContextMenu, MsgBox, PromptBox, FileDialog, Dialog } from './
 import { useSettings, setSettings, themeVars, BLISS, PATTERNS } from './settings.js';
 import * as fs from './fs.js';
 import { newItem, deleteNodes, renameNode, showProps, importFiles } from './actions.js';
+import VirtualKeyboard from '../apps/VirtualKeyboard.jsx';
 
 const SmartTransferToastHost = lazy(() => import('./smartTransferUI.jsx').then((m) => ({ default: m.SmartTransferToastHost })));
 
@@ -103,6 +104,7 @@ export default function Desktop() {
   const [ready, setReady] = useState(false);
   const [sel, setSel] = useState([]);
   const [drag, setDrag] = useState(null);
+  const [kbOpen, setKbOpen] = useState(false);
   const startRef = useRef();
   const wallStyle = useWallpaper(settings);
   const coarse = useMemo(() => window.matchMedia?.('(pointer: coarse)').matches, []);
@@ -126,6 +128,7 @@ export default function Desktop() {
       { id: 'paint', label: 'Paint', icon: 'paint', open: () => os.open('paint'), sys: true },
       { id: 'notepad', label: 'Notepad', icon: 'notepad', open: () => os.open('notepad'), sys: true },
       { id: 'wordpad', label: 'WordPad', icon: 'wordpad', open: () => os.open('wordpad'), sys: true },
+      { id: 'word95', label: 'Word 95', icon: 'word95', open: () => os.open('word95'), sys: true },
       { id: 'acrobat', label: 'Acrobat Reader 5.0', icon: 'acrobat', open: () => os.open('acrobat'), sys: true },
       { id: 'calc', label: 'Calculator', icon: 'calc', open: () => os.open('calc'), sys: true },
       { id: 'media', label: 'Media Player', icon: 'media', open: () => os.open('media'), sys: true },
@@ -133,6 +136,7 @@ export default function Desktop() {
       { id: 'control', label: 'Control Panel', icon: 'control', open: () => os.open('control'), sys: true },
       { id: 'solitaire', label: 'Solitaire', icon: 'solitaire', open: () => os.open('solitaire'), sys: true },
       { id: 'minesweeper', label: 'Minesweeper', icon: 'minesweeper', open: () => os.open('minesweeper'), sys: true },
+      { id: 'keyboard', label: 'Virtual Keyboard', icon: 'keyboard', open: () => setKbOpen(true), sys: true },
     ];
     const f = fs.children('desktop').map((n) => ({ id: 'n:' + n.id, label: n.name, icon: iconForFile(n), node: n, open: () => os.openNode(n) }));
     let all = [...b, ...f];
@@ -217,7 +221,7 @@ export default function Desktop() {
   const app = (id, label, icon) => ({ label, icon, onClick: go(() => os.open(id)) });
   const startItems = [
     { label: '&Programs', icon: 'programs', sub: [
-      { label: 'Accessories', icon: 'folder', sub: [app('acrobat', 'Acrobat Reader 5.0', 'acrobat'), app('notepad', 'Notepad', 'notepad'), app('wordpad', 'WordPad', 'wordpad'), app('paint', 'Paint', 'paint'), app('calc', 'Calculator', 'calc'), app('media', 'Media Player', 'media'), app('sndrec', 'Sound Recorder', 'sound'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('dos', 'MS-DOS Prompt', 'dos')] },
+      { label: 'Accessories', icon: 'folder', sub: [app('acrobat', 'Acrobat Reader 5.0', 'acrobat'), app('notepad', 'Notepad', 'notepad'), app('wordpad', 'WordPad', 'wordpad'), app('word95', 'Word 95', 'word95'), app('paint', 'Paint', 'paint'), app('calc', 'Calculator', 'calc'), app('media', 'Media Player', 'media'), app('sndrec', 'Sound Recorder', 'sound'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('dos', 'MS-DOS Prompt', 'dos')] },
       { label: 'System Tools', icon: 'folder', sub: [app('drives', 'Virtual Drive Manager', 'drive'), app('sysmon', 'Resource Monitor', 'system'), app('inspector', 'Disk & ZIP Inspector', 'zip'), app('recycle', 'Cache & Recycle Bin', 'recycle')] },
       { label: 'Games', icon: 'folder', sub: [app('solitaire', 'Solitaire', 'solitaire'), app('minesweeper', 'Minesweeper', 'minesweeper'), app('freecell', 'FreeCell', 'freecell'), app('hearts', 'Hearts', 'hearts'), app('tetris', 'Tetris', 'tetris'), app('snake', 'Snake', 'snake'), { sep: true }, app('dosgames', 'DOSBox & Retro Computers', 'dosgames')] },
       { sep: true },
@@ -266,6 +270,14 @@ export default function Desktop() {
           <button className="ql-btn" title="Show Desktop" onClick={os.minimizeAll}><Icon name="display" size={16} /></button>
           <button className="ql-btn" title="Internet Browser" onClick={() => os.open('browser')}><Icon name="browser" size={16} /></button>
           <button className="ql-btn" title="Adobe Acrobat Reader 5.0" onClick={() => os.open('acrobat')}><Icon name="acrobat" size={16} /></button>
+          <button
+            className={'ql-btn ' + (kbOpen ? 'pressed' : '')}
+            title="Virtual Keyboard (EN / ΕΛ)"
+            onPointerDown={(e) => e.preventDefault()}
+            onClick={() => setKbOpen((v) => !v)}
+          >
+            <Icon name="keyboard" size={16} />
+          </button>
         </div>
         <div className="tb-sep" />
         <div className="tasks">
@@ -297,6 +309,7 @@ export default function Desktop() {
         if (d.kind === 'file') return <FileDialog key={d.id} opts={d.opts} onDone={done} />;
         return <div key={d.id}>{d.opts.render(done)}</div>;
       })}
+      {kbOpen && <VirtualKeyboard vp={st.vp} onClose={() => setKbOpen(false)} />}
     </div>
   );
 }

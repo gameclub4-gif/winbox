@@ -94,10 +94,16 @@ export function rtfToHtml(rtf) {
   let curHtml = '';
   let curAlign = 'left';
   let curBullet = false;
+  let curLi = 0;
+  let curRi = 0;
   let skipChars = 0;
 
   const pushPara = () => {
-    const style = curAlign && curAlign !== 'left' ? ` style="text-align:${curAlign}"` : '';
+    const styles = [];
+    if (curAlign && curAlign !== 'left') styles.push(`text-align:${curAlign}`);
+    if (curLi > 0) styles.push(`margin-left:${Math.round(curLi / 15)}px`);
+    if (curRi > 0) styles.push(`margin-right:${Math.round(curRi / 15)}px`);
+    const style = styles.length ? ` style="${styles.join(';')}"` : '';
     const content = curHtml || '<br>';
     if (curBullet) paras.push(`<li${style}>${content}</li>`);
     else paras.push(`<p${style}>${content}</p>`);
@@ -209,8 +215,11 @@ export function rtfToHtml(rtf) {
           case 'qc': st.align = 'center'; curAlign = 'center'; break;
           case 'qr': st.align = 'right'; curAlign = 'right'; break;
           case 'qj': st.align = 'justify'; curAlign = 'justify'; break;
+          case 'li': curLi = Math.max(0, param || 0); break;
+          case 'ri': curRi = Math.max(0, param || 0); break;
           case 'pard':
             st.align = 'left'; curAlign = 'left';
+            curLi = 0; curRi = 0;
             break;
           case 'plain':
             st.b = false; st.i = false; st.u = false; st.s = false; st.fs = 12; st.cf = 0; st.f = 0;
@@ -378,7 +387,10 @@ export function htmlToRtf(html) {
     if (isBlock) {
       const align = st?.textAlign || node.getAttribute('align') || 'left';
       const aWord = align === 'center' ? '\\qc' : align === 'right' ? '\\qr' : align === 'justify' ? '\\qj' : '\\ql';
-      bodyRtf += `\\pard${aWord}`;
+      const mlPx = Math.max(0, Math.round(parseFloat(st?.marginLeft || '0') || 0));
+      const mrPx = Math.max(0, Math.round(parseFloat(st?.marginRight || '0') || 0));
+      const indentWords = `${mlPx ? `\\li${mlPx * 15}` : ''}${mrPx ? `\\ri${mrPx * 15}` : ''}`;
+      bodyRtf += `\\pard${aWord}${indentWords}`;
       if (tag === 'li') bodyRtf += '{\\pntext\\bullet\\tab}';
       bodyRtf += ' ';
       for (const ch of node.childNodes) walk(ch, next);

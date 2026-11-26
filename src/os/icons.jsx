@@ -107,6 +107,14 @@ const ICONS = {
   speakerMute: <><path d="M3 11h5l6-5v20l-6-5H3z" fill={L} stroke={S} /><path d="M18 11l8 10M26 11l-8 10" stroke={R} strokeWidth="2" /></>,
   fullscreen: <><path d="M4 4h9M4 4v9M28 4h-9M28 4v9M4 28h9M4 28v-9M28 28h-9M28 28v-9" stroke={S} strokeWidth="3" fill="none" /></>,
   wordpad: <><rect x="5" y="3" width="18" height="25" fill={W} stroke={S} /><rect x="5" y="3" width="18" height="4" fill={B} /><path d="M8 11h10M8 15h12M8 19h8M8 23h10" stroke={G} /><path d="M25 6l4 4-10 14-4 1 1-4z" fill="#e0a020" stroke={S} /><path d="M23 8l4 4" stroke={B} strokeWidth="1.5" /></>,
+  word95: <>
+    <path d="M7 2h14l6 6v21H7z" fill={W} stroke={S} />
+    <path d="M21 2v6h6" fill={L} stroke={S} />
+    <path d="M10 10h13M10 14h13M10 18h13M10 22h11M10 25h9" stroke={L} strokeWidth="1.5" />
+    <rect x="2" y="8" width="16" height="16" fill="#0000c0" stroke={S} />
+    <rect x="3" y="9" width="14" height="14" fill="#0040c0" />
+    <path d="M4.5 11.5h2.2l1.5 6.8 1.4-5.2h1.7l1.4 5.2 1.5-6.8h2.2L14 21.5h-2L10.4 16l-1.6 5.5h-2z" fill={W} />
+  </>,
   acrobat: <>
     <path d="M5 2h15l7 7v21H5z" fill={W} stroke={S} />
     <path d="M20 2v7h7" fill={L} stroke={S} />
@@ -120,6 +128,14 @@ const ICONS = {
     <rect x="6" y="18" width="20" height="9" fill="#cc0000" />
     <path d="M16 9c.9 0 .9 2.4-.2 4.6-1 2.1-3.1 4-4.2 3.5-.8-.4.3-1.6 2.4-2.4 2.5-.9 5.8-.9 7 .3.7.7-.1 1.6-1.4 1.1-1.3-.5-3-2.8-3.8-5.4-.3-.9-.2-1.7.2-1.7z" fill="none" stroke="#cc0000" strokeWidth="1.3" />
     <text x="16" y="25" fontSize="7" fontWeight="bold" textAnchor="middle" fill={W} fontFamily="Arial, sans-serif">PDF</text>
+  </>,
+  keyboard: <>
+    <rect x="2" y="7" width="28" height="18" fill={L} stroke={S} />
+    <path d="M3 8h26M3 8v16" stroke={W} />
+    <path d="M4 11h3v2H4zM8 11h3v2H8zM12 11h3v2h-3zM16 11h3v2h-3zM20 11h3v2h-3zM24 11h4v2h-4z" fill={W} />
+    <path d="M4 15h4v2H4zM9 15h3v2H9zM13 15h3v2h-3zM17 15h3v2h-3zM21 15h7v2h-7z" fill={W} />
+    <path d="M4 19h4v2H4zM9 19h14v2H9zM24 19h4v2h-4z" fill={W} />
+    <path d="M4 13h3M8 13h3M12 13h3M16 13h3M20 13h3M24 13h4M9 21h14" stroke={G} />
   </>,
 };
 export default function Icon({ name, size = 32, style, className }) {
@@ -139,8 +155,8 @@ export function iconForFile(n) {
   if (['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp'].includes(e)) return 'image';
   if (['wav', 'mp3', 'ogg', 'm4a', 'flac', 'aac'].includes(e)) return 'audio';
   if (['mp4', 'webm', 'mov', 'ogv', 'mkv'].includes(e)) return 'video';
-  if (['zip', 'jsdos'].includes(e)) return 'zip';
-  if (['img', 'ima', 'vfd', 'iso', 'cue', 'bin', 'adf', 'ipf', 'dms', 'lha', 'hdf', 'dsk', 'sna', 'cdt', 'd64', 'd71', 'd81', 't64', 'prg', 'crt', 'tap', 'tzx', 'z80', 'st', 'msa', 'stx', 'dim'].includes(e)) return 'dosgames';
+  if (['zip', '7z', 'jsdos'].includes(e)) return 'zip';
+  if (['img', 'ima', 'vfd', 'iso', 'cue', 'bin', 'adf', 'ipf', 'dms', 'lha', 'hdf', 'dsk', 'sna', 'cdt', 'voc', 'd64', 'd71', 'd81', 't64', 'prg', 'crt', 'tap', 'tzx', 'z80', 'trd', 'scl', 'st', 'msa', 'stx', 'dim', 'sts', 'nes', 'fds', 'unif', 'unf', 'sfc', 'smc', 'fig', 'swc', 'md', 'gen', 'smd', '32x', 'sms', 'gg', 'sg', 'pce', 'ccd', 'gb', 'gbc', 'gba', 'fbf', 'neo', 'hfv', 'toast', 'sit', 'hqx'].includes(e)) return 'dosgames';
   if (['exe', 'com'].includes(e)) return 'exe';
   return 'file';
 }

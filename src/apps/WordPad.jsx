@@ -33,9 +33,409 @@ function blobToDataUrl(blob) {
   });
 }
 
+function WpIcon({ name, color = '#000000', bgColor = '#ffff00' }) {
+  switch (name) {
+    case 'new':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M3 1h7l3 3v11H3z" fill="#fff" />
+          <path d="M2 1h8v1H3v12h9V4h1v11H2z" fill="#000" />
+          <path d="M10 1h1v3h3v1h-4z" fill="#808080" />
+          <rect x="10" y="2" width="1" height="2" fill="#dfdfdf" />
+          <rect x="11" y="3" width="1" height="1" fill="#dfdfdf" />
+        </svg>
+      );
+    case 'open-c':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M1 3h5l1 1h6v2H4L2 12H1z" fill="#c0c000" />
+          <path d="M1 2h5l1 1h6v1H7L6 3H2v8H1z" fill="#000" />
+          <path d="M4 6h11l-2 7H2z" fill="#ff0" />
+          <path d="M4 5h11v1H4zm-1 1h1v1H3zm-1 2h1v4H2zm11 4h1v1H3v-1h10zm1-5h1v5h-1z" fill="#000" />
+          <rect x="9" y="10" width="7" height="6" fill="#c0c0c0" />
+          <path d="M9 10h7v1H9zm0 5h7v1H9zm0-5h1v6H9zm6 0h1v6h-1z" fill="#000" />
+          <path d="M11 11h3v1h-2v2h2v1h-3z" fill="#000080" />
+          <rect x="14" y="12" width="1" height="1" fill="#008000" />
+        </svg>
+      );
+    case 'open-pc':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M1 3h5l1 1h6v2H4L2 12H1z" fill="#c0c000" />
+          <path d="M1 2h5l1 1h6v1H7L6 3H2v8H1z" fill="#000" />
+          <path d="M4 6h11l-2 7H2z" fill="#ff0" />
+          <path d="M4 5h11v1H4zm-1 1h1v1H3zm-1 2h1v4H2zm11 4h1v1H3v-1h10zm1-5h1v5h-1z" fill="#000" />
+          <rect x="8" y="9" width="8" height="6" fill="#c0c0c0" />
+          <path d="M8 9h8v6H8z" fill="none" stroke="#000" />
+          <rect x="9" y="10" width="6" height="4" fill="#008080" />
+          <rect x="11" y="15" width="2" height="1" fill="#000" />
+          <rect x="9" y="15" width="6" height="1" fill="#808080" />
+        </svg>
+      );
+    case 'save':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M1 1h12l2 2v12H1z" fill="#000080" />
+          <path d="M1 1h12v1H2v12h12V3h1v12H1z" fill="#000" />
+          <rect x="4" y="1" width="7" height="5" fill="#c0c0c0" />
+          <rect x="8" y="2" width="2" height="3" fill="#000080" />
+          <rect x="3" y="8" width="10" height="6" fill="#fff" />
+          <rect x="4" y="10" width="8" height="1" fill="#808080" />
+          <rect x="4" y="12" width="6" height="1" fill="#808080" />
+        </svg>
+      );
+    case 'save-pc':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M1 1h11l2 2v11H1z" fill="#000080" />
+          <path d="M1 1h11v1H2v11h11V3h1v11H1z" fill="#000" />
+          <rect x="4" y="1" width="6" height="5" fill="#c0c0c0" />
+          <rect x="7" y="2" width="2" height="3" fill="#000080" />
+          <rect x="3" y="8" width="7" height="5" fill="#fff" />
+          <rect x="8" y="9" width="8" height="6" fill="#c0c0c0" />
+          <rect x="9" y="10" width="6" height="4" fill="#008080" />
+          <rect x="8" y="9" width="8" height="1" fill="#000" />
+          <rect x="8" y="14" width="8" height="1" fill="#000" />
+          <rect x="8" y="9" width="1" height="6" fill="#000" />
+          <rect x="15" y="9" width="1" height="6" fill="#000" />
+          <rect x="10" y="15" width="4" height="1" fill="#000" />
+        </svg>
+      );
+    case 'image':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="1" y="2" width="14" height="12" fill="#c0c0c0" />
+          <path d="M1 2h14v1H2v10h12V2h1v12H1z" fill="#000" />
+          <rect x="2" y="3" width="12" height="7" fill="#00ffff" />
+          <rect x="4" y="4" width="2" height="2" fill="#ff0" />
+          <path d="M2 10l3-4 3 3 2-2 4 3v3H2z" fill="#008000" />
+          <path d="M5 6l2 2-1 1-2-1z" fill="#fff" />
+        </svg>
+      );
+    case 'rtf':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M2 1h8l3 3v11H2z" fill="#fff" />
+          <path d="M2 1h8v1H3v12h9V4h1v11H2z" fill="#000" />
+          <path d="M10 1h1v3h2v1h-3z" fill="#808080" />
+          <rect x="4" y="3" width="4" height="1" fill="#000080" />
+          <rect x="4" y="5" width="7" height="1" fill="#808080" />
+          <rect x="4" y="7" width="7" height="1" fill="#808080" />
+          <rect x="3" y="9" width="10" height="5" fill="#000080" />
+          <path d="M4 10h2v1H5v2H4zm4 0h3v1h-1v2H9v-2H8zm4 0h1v3h-1z" fill="#fff" />
+        </svg>
+      );
+    case 'html':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M2 1h8l3 3v11H2z" fill="#fff" />
+          <path d="M2 1h8v1H3v12h9V4h1v11H2z" fill="#000" />
+          <path d="M10 1h1v3h2v1h-3z" fill="#808080" />
+          <rect x="5" y="3" width="4" height="4" fill="#008080" />
+          <rect x="6" y="4" width="2" height="2" fill="#00ff00" />
+          <rect x="3" y="9" width="10" height="5" fill="#008080" />
+          <path d="M4 10h1v1h1v-1h1v3H6v-1H5v1H4zm4 0h3v1h-1v2H9v-2H8zm4 0h1v3h-1z" fill="#fff" />
+        </svg>
+      );
+    case 'zip':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M2 3h5l1 1h6v10H2z" fill="#ff0" />
+          <path d="M2 2h5l1 1h6v11H2zm1 2v9h10V4H7L6 3H3z" fill="#000" />
+          <rect x="7" y="4" width="2" height="9" fill="#808080" />
+          <rect x="7" y="5" width="1" height="1" fill="#fff" />
+          <rect x="8" y="6" width="1" height="1" fill="#000" />
+          <rect x="7" y="7" width="1" height="1" fill="#fff" />
+          <rect x="8" y="8" width="1" height="1" fill="#000" />
+          <rect x="6" y="10" width="4" height="3" fill="#c0c0c0" />
+          <rect x="7" y="11" width="2" height="1" fill="#000080" />
+        </svg>
+      );
+    case 'undo':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M6 3L2 7l4 4V8h4c1.7 0 3 1.3 3 3v2h2v-2c0-2.8-2.2-5-5-5H6V3z" fill="#000080" />
+        </svg>
+      );
+    case 'find':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="3" y="2" width="3" height="2" fill="#808080" />
+          <rect x="10" y="2" width="3" height="2" fill="#808080" />
+          <rect x="2" y="4" width="5" height="6" fill="#000" />
+          <rect x="9" y="4" width="5" height="6" fill="#000" />
+          <rect x="7" y="5" width="2" height="2" fill="#808080" />
+          <rect x="1" y="9" width="6" height="5" fill="#000" />
+          <rect x="9" y="9" width="6" height="5" fill="#000" />
+          <rect x="2" y="10" width="4" height="3" fill="#008080" />
+          <rect x="10" y="10" width="4" height="3" fill="#008080" />
+          <rect x="2" y="10" width="1" height="2" fill="#fff" />
+          <rect x="10" y="10" width="1" height="2" fill="#fff" />
+        </svg>
+      );
+    case 'date':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="1" y="2" width="10" height="11" fill="#fff" />
+          <rect x="1" y="2" width="10" height="3" fill="#000080" />
+          <path d="M1 2h10v11H1zm1 3v7h8V5z" fill="none" stroke="#000" />
+          <rect x="3" y="1" width="1" height="2" fill="#808080" />
+          <rect x="8" y="1" width="1" height="2" fill="#808080" />
+          <rect x="3" y="7" width="1" height="3" fill="#c00000" />
+          <path d="M5 7h3v1H7v1h1v1H5V9h2V8H5z" fill="#000" />
+          <rect x="8" y="8" width="7" height="7" fill="#ff0" />
+          <path d="M8 8h7v7H8zm1 1v5h5V9z" fill="#000" />
+          <rect x="11" y="10" width="1" height="3" fill="#000" />
+          <rect x="11" y="12" width="2" height="1" fill="#000" />
+        </svg>
+      );
+    case 'mic':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="6" y="1" width="4" height="7" fill="#c0c0c0" />
+          <path d="M6 1h4v7H6zm1 1v5h2V2z" fill="#000" />
+          <rect x="7" y="3" width="2" height="1" fill="#808080" />
+          <rect x="7" y="5" width="2" height="1" fill="#808080" />
+          <path d="M4 6h1v3h6V6h1v4H8v3h3v1H5v-1h3v-3H4z" fill="#000080" />
+        </svg>
+      );
+    case 'mic-pause':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="3" y="3" width="3" height="10" fill="#000080" />
+          <rect x="8" y="3" width="3" height="10" fill="#000080" />
+          <rect x="12" y="2" width="3" height="3" fill="#f00" />
+        </svg>
+      );
+    case 'bold':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M3 2h6c1.7 0 3 .9 3 2.5 0 1-.5 1.8-1.4 2.2 1.2.4 1.9 1.3 1.9 2.6C12.5 11.2 11 12 9 12H3V2zm2 2v2.4h3.2c.8 0 1.3-.4 1.3-1.2S9 4 8.2 4H5zm0 4.2V10h3.7c.9 0 1.4-.4 1.4-1.2s-.5-1.2-1.4-1.2H5v.6z" fill="#000" transform="translate(0 1)" />
+        </svg>
+      );
+    case 'italic':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M7 3h5v1.5h-1.7L8.2 11.5H10V13H5v-1.5h1.7L8.8 4.5H7z" fill="#000" />
+        </svg>
+      );
+    case 'underline':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M4 2h2v6.2c0 1.2.7 1.9 2 1.9s2-.7 2-1.9V2h2v6.3c0 2.3-1.5 3.6-4 3.6s-4-1.3-4-3.6V2z" fill="#000" />
+          <rect x="3" y="13" width="10" height="1.5" fill="#000" />
+        </svg>
+      );
+    case 'color':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M6.5 2h2L12 11h-2l-.7-2H5.7L5 11H3L6.5 2zm1 2.5L6.2 7.5h2.6L7.5 4.5z" fill="#000" />
+          <rect x="2" y="12" width="12" height="3" fill={color || '#000'} />
+          <path d="M2 12h12v3H2z" fill="none" stroke="#808080" strokeWidth="0.6" />
+        </svg>
+      );
+    case 'highlight':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="12" width="12" height="3" fill={bgColor || '#ff0'} />
+          <rect x="2" y="12" width="12" height="3" fill="none" stroke="#808080" strokeWidth="0.7" />
+          <path d="M4 4h2v3h3V4h2v7H9v-1H7v1H4z" fill="#000" opacity="0" />
+          <path d="M10 1l3 3-6 6-3 1 1-3 5-7z" fill="#c0c0c0" stroke="#000" strokeWidth="1" />
+          <path d="M4 9l2 2-2.5.5z" fill={bgColor || '#ff0'} />
+        </svg>
+      );
+    case 'clear-highlight':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M8 3h6v4l-5 5H4l-2-2 6-7z" fill="#ff8080" stroke="#000" strokeWidth="1" />
+          <path d="M3 10l4 3H2z" fill="#fff" stroke="#000" strokeWidth="1" />
+          <rect x="2" y="14" width="12" height="1" fill="#808080" />
+        </svg>
+      );
+    case 'align-left':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="3" width="12" height="1" fill="#000" />
+          <rect x="2" y="5" width="8" height="1" fill="#000" />
+          <rect x="2" y="7" width="12" height="1" fill="#000" />
+          <rect x="2" y="9" width="9" height="1" fill="#000" />
+          <rect x="2" y="11" width="12" height="1" fill="#000" />
+          <rect x="2" y="13" width="7" height="1" fill="#000" />
+        </svg>
+      );
+    case 'align-center':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="3" width="12" height="1" fill="#000" />
+          <rect x="4" y="5" width="8" height="1" fill="#000" />
+          <rect x="2" y="7" width="12" height="1" fill="#000" />
+          <rect x="3" y="9" width="10" height="1" fill="#000" />
+          <rect x="2" y="11" width="12" height="1" fill="#000" />
+          <rect x="4" y="13" width="8" height="1" fill="#000" />
+        </svg>
+      );
+    case 'align-right':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="3" width="12" height="1" fill="#000" />
+          <rect x="6" y="5" width="8" height="1" fill="#000" />
+          <rect x="2" y="7" width="12" height="1" fill="#000" />
+          <rect x="5" y="9" width="9" height="1" fill="#000" />
+          <rect x="2" y="11" width="12" height="1" fill="#000" />
+          <rect x="7" y="13" width="7" height="1" fill="#000" />
+        </svg>
+      );
+    case 'bullets':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="3" width="2" height="2" fill="#000" />
+          <rect x="6" y="3" width="8" height="2" fill="#000" />
+          <rect x="2" y="7" width="2" height="2" fill="#000" />
+          <rect x="6" y="7" width="8" height="2" fill="#000" />
+          <rect x="2" y="11" width="2" height="2" fill="#000" />
+          <rect x="6" y="11" width="8" height="2" fill="#000" />
+        </svg>
+      );
+    case 'print':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="4" y="1" width="8" height="5" fill="#fff" stroke="#000" strokeWidth="1" />
+          <rect x="1" y="6" width="14" height="6" fill="#c0c0c0" stroke="#000" strokeWidth="1" />
+          <rect x="3" y="8" width="10" height="1" fill="#808080" />
+          <rect x="11" y="9" width="2" height="1" fill="#008000" />
+          <rect x="4" y="10" width="8" height="5" fill="#fff" stroke="#000" strokeWidth="1" />
+          <rect x="5" y="12" width="6" height="1" fill="#808080" />
+        </svg>
+      );
+    case 'cut':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M4 2l4 6m4-6L8 8" stroke="#000080" strokeWidth="1.5" />
+          <circle cx="4.5" cy="11.5" r="2.2" fill="none" stroke="#000" strokeWidth="1.2" />
+          <circle cx="11.5" cy="11.5" r="2.2" fill="none" stroke="#000" strokeWidth="1.2" />
+        </svg>
+      );
+    case 'copy':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="1" width="8" height="10" fill="#fff" stroke="#000" strokeWidth="1" />
+          <rect x="4" y="3" width="4" height="1" fill="#000080" />
+          <rect x="4" y="5" width="4" height="1" fill="#808080" />
+          <rect x="6" y="5" width="8" height="10" fill="#fff" stroke="#000" strokeWidth="1" />
+          <rect x="8" y="7" width="4" height="1" fill="#000080" />
+          <rect x="8" y="9" width="4" height="1" fill="#808080" />
+          <rect x="8" y="11" width="4" height="1" fill="#808080" />
+        </svg>
+      );
+    case 'paste':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="2" width="10" height="12" fill="#808000" stroke="#000" strokeWidth="1" />
+          <rect x="5" y="1" width="4" height="2" fill="#c0c0c0" stroke="#000" strokeWidth="0.8" />
+          <rect x="6" y="5" width="8" height="10" fill="#fff" stroke="#000" strokeWidth="1" />
+          <rect x="8" y="7" width="4" height="1" fill="#000080" />
+          <rect x="8" y="9" width="4" height="1" fill="#808080" />
+          <rect x="8" y="11" width="4" height="1" fill="#808080" />
+        </svg>
+      );
+    case 'redo':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M10 3l4 4-4 4V8H6c-1.7 0-3 1.3-3 3v2H1v-2c0-2.8 2.2-5 5-5h4V3z" fill="#000080" />
+        </svg>
+      );
+    case 'table':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="2" width="12" height="12" fill="#fff" stroke="#000" strokeWidth="1" />
+          <rect x="2" y="2" width="12" height="3" fill="#000080" />
+          <rect x="6" y="5" width="1" height="9" fill="#808080" />
+          <rect x="10" y="5" width="1" height="9" fill="#808080" />
+          <rect x="2" y="8" width="12" height="1" fill="#808080" />
+          <rect x="2" y="11" width="12" height="1" fill="#808080" />
+        </svg>
+      );
+    case 'pilcrow':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M7 2C4.8 2 3 3.5 3 5.5S4.8 9 7 9v5h2V4h2v10h2V2H7z" fill="#000080" />
+        </svg>
+      );
+    case 'word95':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M2 1h9l3 3v11H2z" fill="#fff" stroke="#000" strokeWidth="1" />
+          <rect x="11" y="2" width="2" height="2" fill="#c0c0c0" />
+          <path d="M4 5h1.8l1.2 5 1.1-4h1.3l1.1 4 1.2-5H13l-1.9 8H9.7l-1-3.8L7.6 13H6.2z" fill="#0000c0" />
+        </svg>
+      );
+    case 'align-justify':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="3" width="12" height="1" fill="#000" />
+          <rect x="2" y="5" width="12" height="1" fill="#000" />
+          <rect x="2" y="7" width="12" height="1" fill="#000" />
+          <rect x="2" y="9" width="12" height="1" fill="#000" />
+          <rect x="2" y="11" width="12" height="1" fill="#000" />
+          <rect x="2" y="13" width="12" height="1" fill="#000" />
+        </svg>
+      );
+    case 'numbers':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="2" width="2" height="3" fill="#000080" />
+          <rect x="6" y="3" width="8" height="2" fill="#000" />
+          <path d="M2 6h2v2H2v1h2" fill="none" stroke="#000080" strokeWidth="1" />
+          <rect x="6" y="7" width="8" height="2" fill="#000" />
+          <rect x="2" y="11" width="2" height="3" fill="#000080" />
+          <rect x="6" y="11" width="8" height="2" fill="#000" />
+        </svg>
+      );
+    case 'outdent':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="3" width="12" height="1" fill="#000" />
+          <rect x="7" y="6" width="7" height="1" fill="#000" />
+          <rect x="7" y="9" width="7" height="1" fill="#000" />
+          <rect x="2" y="12" width="12" height="1" fill="#000" />
+          <path d="M5 5L2 7.5 5 10V8.5h2v-2H5z" fill="#000080" />
+        </svg>
+      );
+    case 'indent':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="3" width="12" height="1" fill="#000" />
+          <rect x="7" y="6" width="7" height="1" fill="#000" />
+          <rect x="7" y="9" width="7" height="1" fill="#000" />
+          <rect x="2" y="12" width="12" height="1" fill="#000" />
+          <path d="M3 5l3 2.5L3 10V8.5H1v-2h2z" fill="#000080" />
+        </svg>
+      );
+    case 'border':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <rect x="2" y="2" width="12" height="12" fill="#fff" stroke="#000" strokeWidth="1.5" />
+          <rect x="7" y="3" width="2" height="10" fill="#c0c0c0" />
+          <rect x="3" y="7" width="10" height="2" fill="#c0c0c0" />
+        </svg>
+      );
+    case 'format-painter':
+      return (
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+          <path d="M9 1h3v4l-2 2H7l1-3z" fill="#808000" stroke="#000" strokeWidth="0.9" />
+          <path d="M6 6h5l-2 4H3l2-3z" fill="#ff0" stroke="#000" strokeWidth="0.9" />
+          <path d="M3 10h4l-2 4H1z" fill="#c0c000" stroke="#000" strokeWidth="0.8" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
 export default function WordPad({ win, props, active }) {
   const os = useOS();
   const ed = useRef();
+  const rulerTrackRef = useRef(null);
   const savedRange = useRef(null);
   const selectedImgRef = useRef(null);
   const blobUrls = useRef([]);
@@ -46,6 +446,17 @@ export default function WordPad({ win, props, active }) {
   const [showToolbar, setShowToolbar] = useState(true);
   const [showFormatBar, setShowFormatBar] = useState(true);
   const [showRuler, setShowRuler] = useState(true);
+  const [skinMode, setSkinMode] = useState(props.skinMode === 'word95' ? 'word95' : 'wordpad'); // 'wordpad' | 'word95'
+  const [word95View, setWord95View] = useState('page'); // 'page' | 'normal'
+  const [showMarks, setShowMarks] = useState(false);
+  const [zoomPct, setZoomPct] = useState(100);
+  const [blockStyle, setBlockStyle] = useState('p');
+  const [painterFmt, setPainterFmt] = useState(null);
+  const [cursorPos, setCursorPos] = useState({ ln: 1, col: 1 });
+  const [fmtState, setFmtState] = useState({ b: false, i: false, u: false, align: 'left', ul: false, ol: false, border: false });
+  const [rulerLeft, setRulerLeft] = useState(0);
+  const [rulerRight, setRulerRight] = useState(0);
+  const [rulerDrag, setRulerDrag] = useState(null);
   const [font, setFont] = useState('Arial');
   const [fontSize, setFontSize] = useState('3');
   const [color, setColor] = useState('#000000');
@@ -71,12 +482,106 @@ export default function WordPad({ win, props, active }) {
     setWordCount(txt ? txt.split(/\s+/).length : 0);
   };
 
+  const getTargetBlocks = () => {
+    const el = ed.current;
+    if (!el) return [];
+    const blockSel = 'p, div, li, h1, h2, h3, h4, blockquote';
+    const sel = window.getSelection();
+    let rng = null;
+    if (sel && sel.rangeCount > 0 && el.contains(sel.getRangeAt(0).commonAncestorContainer)) {
+      rng = sel.getRangeAt(0);
+    } else if (savedRange.current && el.contains(savedRange.current.commonAncestorContainer)) {
+      rng = savedRange.current;
+    }
+
+    const findBlockForNode = (node) => {
+      let cur = node?.nodeType === 3 ? node.parentElement : node;
+      while (cur && cur !== el) {
+        if (cur.matches?.(blockSel) && cur.parentElement === el) return cur;
+        if (cur.tagName === 'LI') return cur;
+        cur = cur.parentElement;
+      }
+      return null;
+    };
+
+    if (rng) {
+      if (rng.collapsed) {
+        const b = findBlockForNode(rng.startContainer);
+        if (b) return [b];
+      } else {
+        const matched = [...el.querySelectorAll(blockSel)].filter((blk) => {
+          try {
+            return (blk.parentElement === el || blk.tagName === 'LI') && rng.intersectsNode(blk);
+          } catch {
+            return false;
+          }
+        });
+        if (matched.length) return matched;
+        const b = findBlockForNode(rng.commonAncestorContainer);
+        if (b) return [b];
+      }
+    }
+    const first = el.querySelector(blockSel);
+    return first ? [first] : [];
+  };
+
+  const syncFromCaret = () => {
+    const blocks = getTargetBlocks();
+    const blk = blocks[0];
+    if (blk) {
+      const ml = Math.max(0, Math.round(parseFloat(blk.style.marginLeft || '0') || 0));
+      const mr = Math.max(0, Math.round(parseFloat(blk.style.marginRight || '0') || 0));
+      setRulerLeft(ml);
+      setRulerRight(mr);
+      const t = blk.tagName.toLowerCase();
+      setBlockStyle(['p', 'h1', 'h2', 'h3', 'blockquote'].includes(t) ? t : 'p');
+    }
+    try {
+      const el = ed.current;
+      const sel = window.getSelection();
+      if (el && sel && sel.rangeCount > 0 && el.contains(sel.focusNode)) {
+        const pre = document.createRange();
+        pre.setStart(el, 0);
+        pre.setEnd(sel.focusNode, sel.focusOffset);
+        const raw = pre.toString();
+        const lines = raw.split('\n');
+        setCursorPos({ ln: Math.max(1, lines.length), col: (lines[lines.length - 1] || '').length + 1 });
+      }
+      const b = !!document.queryCommandState('bold');
+      const i = !!document.queryCommandState('italic');
+      const u = !!document.queryCommandState('underline');
+      const ul = !!document.queryCommandState('insertUnorderedList');
+      const ol = !!document.queryCommandState('insertOrderedList');
+      let align = 'left';
+      if (document.queryCommandState('justifyCenter')) align = 'center';
+      else if (document.queryCommandState('justifyRight')) align = 'right';
+      else if (document.queryCommandState('justifyFull')) align = 'full';
+      else if (blk) {
+        const ta = (blk.style.textAlign || getComputedStyle(blk).textAlign || 'left').toLowerCase();
+        if (ta === 'center') align = 'center';
+        else if (ta === 'right') align = 'right';
+        else if (ta === 'justify') align = 'full';
+      }
+      const border = !!(blk && blk.style.border);
+      setFmtState({ b, i, u, align, ul, ol, border });
+
+      const qFont = (document.queryCommandValue('fontName') || '').split(',')[0].replace(/['"]/g, '').trim();
+      if (qFont) {
+        const matchedFont = FONTS.find((f) => f.toLowerCase() === qFont.toLowerCase());
+        if (matchedFont) setFont(matchedFont);
+      }
+      const qSize = String(document.queryCommandValue('fontSize') || '').trim();
+      if (SIZES.some(([val]) => val === qSize)) setFontSize(qSize);
+    } catch { /* ignore */ }
+  };
+
   const captureSelection = () => {
     const sel = window.getSelection();
     if (!sel || sel.rangeCount === 0 || !ed.current) return;
     const rng = sel.getRangeAt(0);
     if (ed.current.contains(rng.commonAncestorContainer)) {
       savedRange.current = rng.cloneRange();
+      syncFromCaret();
     }
   };
 
@@ -88,6 +593,170 @@ export default function WordPad({ win, props, active }) {
     if (!sel) return;
     sel.removeAllRanges();
     sel.addRange(rng);
+  };
+
+  const applyParagraphMargins = (nextLeft, nextRight, explicitBlocks = null) => {
+    const blocks = explicitBlocks && explicitBlocks.length ? explicitBlocks : getTargetBlocks();
+    if (blocks.length) {
+      for (const blk of blocks) {
+        if (nextLeft != null) blk.style.marginLeft = nextLeft > 0 ? `${nextLeft}px` : '';
+        if (nextRight != null) blk.style.marginRight = nextRight > 0 ? `${nextRight}px` : '';
+      }
+    } else if (ed.current) {
+      if (nextLeft != null) ed.current.style.paddingLeft = `${(skinMode === 'word95' && word95View === 'page' ? 36 : 20) + nextLeft}px`;
+      if (nextRight != null) ed.current.style.paddingRight = `${(skinMode === 'word95' && word95View === 'page' ? 36 : 20) + nextRight}px`;
+    }
+    if (nextLeft != null) setRulerLeft(nextLeft);
+    if (nextRight != null) setRulerRight(nextRight);
+    setDirty(true);
+  };
+
+  const adjustIndent = (deltaPx) => {
+    restoreSelection();
+    const trackW = rulerTrackRef.current?.clientWidth || 560;
+    const maxL = Math.max(40, trackW - rulerRight - 80);
+    const nextL = Math.max(0, Math.min(maxL, rulerLeft + deltaPx));
+    applyParagraphMargins(nextL, null);
+  };
+
+  const startRulerDrag = (side, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const track = rulerTrackRef.current;
+    if (!track) return;
+    const startX = e.clientX;
+    const startL = rulerLeft;
+    const startR = rulerRight;
+    const trackW = track.clientWidth || 560;
+    const blocks = getTargetBlocks();
+
+    const onMove = (ev) => {
+      const dx = ev.clientX - startX;
+      if (side === 'l') {
+        const maxL = Math.max(30, trackW - startR - 80);
+        let next = Math.round(Math.max(0, Math.min(maxL, startL + dx)));
+        if (next < 6) next = 0;
+        applyParagraphMargins(next, null, blocks);
+        setRulerDrag({ side: 'l', px: next, x: ev.clientX, y: ev.clientY });
+      } else {
+        const maxR = Math.max(30, trackW - startL - 80);
+        let next = Math.round(Math.max(0, Math.min(maxR, startR - dx)));
+        if (next < 6) next = 0;
+        applyParagraphMargins(null, next, blocks);
+        setRulerDrag({ side: 'r', px: next, x: ev.clientX, y: ev.clientY });
+      }
+    };
+    const onUp = () => {
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+      setRulerDrag(null);
+      restoreSelection();
+    };
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+    setRulerDrag({ side, px: side === 'l' ? startL : startR, x: e.clientX, y: e.clientY });
+  };
+
+  const resetCurrentMargins = () => {
+    applyParagraphMargins(0, 0);
+    restoreSelection();
+  };
+
+  const applyDocMarginPreset = (px) => {
+    const el = ed.current;
+    if (!el) return;
+    const blocks = [...el.querySelectorAll('p, div, li, h1, h2, h3, h4, blockquote')].filter(
+      (b) => b.parentElement === el || b.tagName === 'LI',
+    );
+    applyParagraphMargins(px, px, blocks);
+    restoreSelection();
+  };
+
+  const toggleFormatPainter = () => {
+    if (painterFmt) {
+      setPainterFmt(null);
+      return;
+    }
+    restoreSelection();
+    try {
+      setPainterFmt({
+        b: document.queryCommandState('bold'),
+        i: document.queryCommandState('italic'),
+        u: document.queryCommandState('underline'),
+        fontName: document.queryCommandValue('fontName') || font,
+        fontSize: document.queryCommandValue('fontSize') || fontSize,
+        foreColor: document.queryCommandValue('foreColor') || color,
+      });
+    } catch {
+      setPainterFmt({ b: false, i: false, u: false, fontName: font, fontSize, foreColor: color });
+    }
+  };
+
+  const applyPainterFormatIfArmed = () => {
+    if (!painterFmt) return;
+    const fmt = painterFmt;
+    setPainterFmt(null);
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return;
+    try {
+      document.execCommand('styleWithCSS', false, true);
+      if (document.queryCommandState('bold') !== fmt.b) document.execCommand('bold', false, null);
+      if (document.queryCommandState('italic') !== fmt.i) document.execCommand('italic', false, null);
+      if (document.queryCommandState('underline') !== fmt.u) document.execCommand('underline', false, null);
+      if (fmt.fontName) document.execCommand('fontName', false, fmt.fontName.replace(/['"]/g, ''));
+      if (fmt.fontSize) document.execCommand('fontSize', false, fmt.fontSize);
+      if (fmt.foreColor) document.execCommand('foreColor', false, fmt.foreColor);
+      setDirty(true);
+    } catch { /* ignore */ }
+  };
+
+  const insertTable = async () => {
+    const spec = await os.prompt({ title: 'Insert Table', label: 'Rows x Columns (e.g. 3x3):', value: '3x3' });
+    if (!spec) return;
+    const m = spec.match(/(\d+)\s*[x×, ]\s*(\d+)/i);
+    const rows = Math.max(1, Math.min(12, parseInt(m?.[1] || '3', 10)));
+    const cols = Math.max(1, Math.min(8, parseInt(m?.[2] || '3', 10)));
+    const tr = `<tr>${'<td><br></td>'.repeat(cols)}</tr>`;
+    exec('insertHTML', `<table><tbody>${tr.repeat(rows)}</tbody></table><p><br></p>`, true);
+  };
+
+  const toggleParagraphBorder = () => {
+    restoreSelection();
+    const blocks = getTargetBlocks();
+    if (!blocks.length) return;
+    const hasBorder = !!blocks[0].style.border;
+    for (const blk of blocks) {
+      if (hasBorder) {
+        blk.style.border = '';
+        blk.style.padding = '';
+      } else {
+        blk.style.border = '1px solid #000';
+        blk.style.padding = '4px 6px';
+      }
+    }
+    setDirty(true);
+    syncFromCaret();
+  };
+
+  const printDocument = () => {
+    try {
+      const nm = fileId ? fs.get(fileId)?.name : localFile ? localFile.name : 'Document';
+      const html = wrapStandaloneHtml(ed.current?.innerHTML || '<p><br></p>', nm || 'Document');
+      const ifr = document.createElement('iframe');
+      ifr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden;';
+      document.body.appendChild(ifr);
+      ifr.onload = () => {
+        try {
+          ifr.contentWindow?.focus();
+          ifr.contentWindow?.print();
+        } finally {
+          setTimeout(() => ifr.remove(), 1200);
+        }
+      };
+      ifr.srcdoc = html;
+    } catch (e) {
+      os.msg({ icon: 'error', title: 'Print', text: e.message });
+    }
   };
 
   const getCharBeforeCaret = () => {
@@ -173,7 +842,13 @@ export default function WordPad({ win, props, active }) {
     }
     if (ed.current) {
       ed.current.innerHTML = html || '<p><br></p>';
+      ed.current.style.paddingLeft = '';
+      ed.current.style.paddingRight = '';
       updateWordCount();
+      setRulerLeft(0);
+      setRulerRight(0);
+      setBlockStyle('p');
+      syncFromCaret();
     }
     setFormat(nextFmt);
     setDirty(false);
@@ -187,7 +862,13 @@ export default function WordPad({ win, props, active }) {
       const res = extractHtmlFromZip(buf, filename);
       if (ed.current) {
         ed.current.innerHTML = res.html || '<p><br></p>';
+        ed.current.style.paddingLeft = '';
+        ed.current.style.paddingRight = '';
         updateWordCount();
+        setRulerLeft(0);
+        setRulerRight(0);
+        setBlockStyle('p');
+        syncFromCaret();
       }
       setFormat('zip');
       setDirty(false);
@@ -216,9 +897,16 @@ export default function WordPad({ win, props, active }) {
   }, [active, win.id]);
 
   useEffect(() => {
+    if (props.skinMode === 'word95' || props.skinMode === 'wordpad') {
+      setSkinMode(props.skinMode);
+    }
+  }, [props.skinMode, win.nonce]);
+
+  useEffect(() => {
     const nm = fileId ? fs.get(fileId)?.name : localFile ? localFile.name : 'Document';
-    os.setTitle(win.id, `${nm || 'Document'}${dirty ? '*' : ''} - WordPad`);
-  }, [fileId, localFile, dirty, win.id, os]);
+    const appTitle = skinMode === 'word95' ? 'Microsoft Word' : 'WordPad';
+    os.setTitle(win.id, `${nm || 'Document'}${dirty ? '*' : ''} - ${appTitle}`, skinMode === 'word95' ? 'word95' : 'wordpad');
+  }, [fileId, localFile, dirty, skinMode, win.id, os]);
 
   const inlineBlobImagesForStandaloneHtml = async (rawBodyHtml) => {
     if (!rawBodyHtml.includes('blob:')) return rawBodyHtml;
@@ -401,7 +1089,12 @@ export default function WordPad({ win, props, active }) {
 
   const newDoc = async () => {
     if (!(await confirmDiscard())) return;
-    if (ed.current) ed.current.innerHTML = '<p><br></p>';
+    if (ed.current) {
+      ed.current.innerHTML = '<p><br></p>';
+      ed.current.style.paddingLeft = '';
+      ed.current.style.paddingRight = '';
+    }
+    setRulerLeft(0); setRulerRight(0); setBlockStyle('p');
     setFileId(null); setLocalFile(null); setFormat('rtf'); setDirty(false); updateWordCount();
   };
 
@@ -834,6 +1527,14 @@ export default function WordPad({ win, props, active }) {
       { label: 'Export HTML + Images &ZIP (.zip) to PC...', onClick: saveHtmlZipToPC },
       { label: 'Export HTML + Images ZIP (.zip) to C:\\...', onClick: saveHtmlZipToC },
       { sep: true },
+      { label: '&Page Margins Preset', sub: [
+        { label: 'Default (0 px)', onClick: () => applyDocMarginPreset(0) },
+        { label: 'Narrow (24 px)', onClick: () => applyDocMarginPreset(24) },
+        { label: 'Standard Letter (48 px)', onClick: () => applyDocMarginPreset(48) },
+        { label: 'Wide Quote (80 px)', onClick: () => applyDocMarginPreset(80) },
+      ] },
+      { label: 'Print...', onClick: printDocument },
+      { sep: true },
       { label: 'E&xit', onClick: () => os.close(win.id) },
     ] },
     { label: '&Edit', items: [
@@ -850,11 +1551,21 @@ export default function WordPad({ win, props, active }) {
       { label: '&Toolbar', checked: showToolbar, onClick: () => setShowToolbar(!showToolbar) },
       { label: '&Format Bar', checked: showFormatBar, onClick: () => setShowFormatBar(!showFormatBar) },
       { label: '&Ruler', checked: showRuler, onClick: () => setShowRuler(!showRuler) },
+      { sep: true },
+      { label: '&Word 95 Skin Mode', checked: skinMode === 'word95', onClick: () => setSkinMode((m) => (m === 'word95' ? 'wordpad' : 'word95')) },
+      ...(skinMode === 'word95'
+        ? [
+          { label: '&Page Layout View', radio: true, checked: word95View === 'page', onClick: () => setWord95View('page') },
+          { label: '&Normal View', radio: true, checked: word95View === 'normal', onClick: () => setWord95View('normal') },
+          { label: 'Show/Hide ¶ &Marks', checked: showMarks, onClick: () => setShowMarks((v) => !v) },
+        ]
+        : []),
     ] },
     { label: '&Insert', items: [
       { label: '&Picture from PC...', onClick: insertImageFromPC },
       { label: 'Picture from Drive &C:...', onClick: insertImageFromC },
       { sep: true },
+      { label: '&Table...', onClick: insertTable },
       { label: '&Date and Time', onClick: insertDateTime },
       { label: '&Horizontal Rule', onClick: () => exec('insertHorizontalRule') },
     ] },
@@ -862,13 +1573,20 @@ export default function WordPad({ win, props, active }) {
       { label: '&Bold', onClick: () => exec('bold') },
       { label: '&Italic', onClick: () => exec('italic') },
       { label: '&Underline', onClick: () => exec('underline') },
+      { label: 'Format &Painter', checked: !!painterFmt, onClick: toggleFormatPainter },
       { sep: true },
       { label: 'Clear &Highlight Background', onClick: () => applyHighlight('transparent') },
       { sep: true },
       { label: 'Bullet &Style', onClick: () => exec('insertUnorderedList') },
+      { label: '&Numbered List', onClick: () => exec('insertOrderedList') },
+      { label: '&Increase Indent', onClick: () => adjustIndent(24) },
+      { label: '&Decrease Indent', onClick: () => adjustIndent(-24) },
+      { label: '&Reset Paragraph Margins', onClick: resetCurrentMargins },
+      { sep: true },
       { label: 'Align &Left', onClick: () => exec('justifyLeft') },
       { label: 'Align &Center', onClick: () => exec('justifyCenter') },
       { label: 'Align &Right', onClick: () => exec('justifyRight') },
+      { label: '&Justify', onClick: () => exec('justifyFull') },
     ] },
     { label: '&Send', items: () => [
       { label: 'Send to &Notepad as TXT', disabled: !hasDocText(), onClick: sendToNotepadTxt },
@@ -884,31 +1602,71 @@ export default function WordPad({ win, props, active }) {
     { label: '&Help', items: [
       { label: '&Help Topics', onClick: () => os.open('help') },
       { sep: true },
-      { label: '&About WordPad', onClick: () => os.msg({ icon: 'info', title: 'About WordPad', text: 'WordPad\nWindows 95 Smart Edition\nRich Text (.rtf), HTML (.html), HTML+Images ZIP (.zip), and Smart Office Transfer.' }) },
+      { label: skinMode === 'word95' ? '&About Microsoft Word 95' : '&About WordPad', onClick: () => os.msg({ icon: 'info', title: skinMode === 'word95' ? 'About Microsoft Word' : 'About WordPad', text: `${skinMode === 'word95' ? 'Microsoft Word for Windows 95 Skin Mode' : 'WordPad'}\nWindows 95 Smart Edition\nRich Text (.rtf), HTML (.html), HTML+Images ZIP (.zip), Interactive Margin Ruler, and Smart Office Transfer.` }) },
     ] },
   ];
 
   const sourceLabel = fileId ? fs.pathOf(fileId) : localFile ? `Local PC: ${localFile.name}${localFile.handle ? ' (Direct Write)' : ''}` : 'New Document';
 
+  const isW95 = skinMode === 'word95';
+  const appCls = `app wp-app${isW95 ? ` wp-word95 wp-view-${word95View}` : ''}`;
+
   return (
-    <div className="app wp-app" onDragOver={(e) => e.preventDefault()} onDrop={onDropFile}>
+    <div className={appCls} onDragOver={(e) => e.preventDefault()} onDrop={onDropFile}>
       <MenuBar menus={menus} />
       {showToolbar && (
         <div className="toolbar">
-          <button className="btn tool" title="New" onClick={newDoc}>New</button>
-          <button className="btn tool" title="Open from Drive C:" onClick={openFromC}>Open C:</button>
-          <button className="btn tool" title="Open RTF/HTML/ZIP from Local PC" onClick={openFromPC}>Open PC</button>
-          <button className="btn tool" title="Save" onClick={() => save(false)}>Save</button>
-          <button className="btn tool" title="Save to Local PC" onClick={() => saveToLocalPC(false)}>Save PC</button>
+          {isW95 && <span className="wp-grip" />}
+          <button className="btn tool" title="New" onClick={newDoc}><WpIcon name="new" /></button>
+          <button className="btn tool" title="Open from Drive C:" onClick={openFromC}><WpIcon name="open-c" /></button>
+          <button className="btn tool" title="Open RTF/HTML/ZIP from Local PC" onClick={openFromPC}><WpIcon name="open-pc" /></button>
+          <button className="btn tool" title="Save" onClick={() => save(false)}><WpIcon name="save" /></button>
+          <button className="btn tool" title="Save to Local PC" onClick={() => saveToLocalPC(false)}><WpIcon name="save-pc" /></button>
+          {isW95 && (
+            <>
+              <button className="btn tool" title="Print" onClick={printDocument}><WpIcon name="print" /></button>
+              <span className="tb-div" />
+              <button className="btn tool" title="Cut" onMouseDown={(e) => { e.preventDefault(); exec('cut'); }}><WpIcon name="cut" /></button>
+              <button className="btn tool" title="Copy" onMouseDown={(e) => { e.preventDefault(); exec('copy'); }}><WpIcon name="copy" /></button>
+              <button className="btn tool" title="Paste" onMouseDown={(e) => { e.preventDefault(); captureSelection(); }} onClick={pasteClipboard}><WpIcon name="paste" /></button>
+              <button className={'btn tool ' + (painterFmt ? 'pressed' : '')} title="Format Painter (copy & apply selection formatting)" onMouseDown={(e) => { e.preventDefault(); captureSelection(); }} onClick={toggleFormatPainter}><WpIcon name="format-painter" /></button>
+              <span className="tb-div" />
+              <button className="btn tool" title="Undo" onClick={() => exec('undo')}><WpIcon name="undo" /></button>
+              <button className="btn tool" title="Redo" onClick={() => exec('redo')}><WpIcon name="redo" /></button>
+            </>
+          )}
           <span className="tb-div" />
-          <button className="btn tool" title="Insert Picture from PC" onClick={insertImageFromPC}>🖼 Image</button>
-          <button className="btn tool" title="Export RTF" onClick={() => saveToLocalPC(true, 'rtf')}>.RTF</button>
-          <button className="btn tool" title="Export HTML" onClick={() => saveToLocalPC(true, 'html')}>.HTML</button>
-          <button className="btn tool" title="Export HTML + images/ folder (.zip)" onClick={saveHtmlZipToPC}>HTML+ZIP</button>
+          <button className="btn tool" title="Insert Picture from PC" onClick={insertImageFromPC}><WpIcon name="image" /></button>
+          {isW95 && <button className="btn tool" title="Insert Table" onMouseDown={(e) => { e.preventDefault(); captureSelection(); }} onClick={insertTable}><WpIcon name="table" /></button>}
+          <button className="btn tool" title="Export RTF" onClick={() => saveToLocalPC(true, 'rtf')}><WpIcon name="rtf" /></button>
+          <button className="btn tool" title="Export HTML" onClick={() => saveToLocalPC(true, 'html')}><WpIcon name="html" /></button>
+          <button className="btn tool" title="Export HTML + images/ folder (.zip)" onClick={saveHtmlZipToPC}><WpIcon name="zip" /></button>
           <span className="tb-div" />
-          <button className="btn tool" title="Undo" onClick={() => exec('undo')}>↶</button>
-          <button className="btn tool" title="Find" onClick={findText}>Find</button>
-          <button className="btn tool" title="Insert Date/Time" onClick={insertDateTime}>Date</button>
+          {!isW95 && <button className="btn tool" title="Undo" onClick={() => exec('undo')}><WpIcon name="undo" /></button>}
+          <button className="btn tool" title="Find" onClick={findText}><WpIcon name="find" /></button>
+          <button className="btn tool" title="Insert Date/Time" onClick={insertDateTime}><WpIcon name="date" /></button>
+          {isW95 && (
+            <>
+              <button
+                className={'btn tool ' + (showMarks ? 'pressed' : '')}
+                title="Show/Hide Paragraph Marks (¶)"
+                onClick={() => setShowMarks((v) => !v)}
+              >
+                <WpIcon name="pilcrow" />
+              </button>
+              <select
+                className="field"
+                style={{ height: 22, padding: '0 3px', width: 54 }}
+                title="Zoom"
+                value={zoomPct}
+                onChange={(e) => setZoomPct(Number(e.target.value))}
+              >
+                {[75, 100, 125, 150].map((z) => (
+                  <option key={z} value={z}>{z}%</option>
+                ))}
+              </select>
+            </>
+          )}
           <span className="tb-div" />
           <button
             className={'btn tool ' + (voice.listening ? 'pressed' : '')}
@@ -916,7 +1674,7 @@ export default function WordPad({ win, props, active }) {
             onMouseDown={(e) => { e.preventDefault(); captureSelection(); }}
             onClick={voice.toggle}
           >
-            {voice.listening ? '⏸️' : '🎙️'}
+            <WpIcon name={voice.listening ? 'mic-pause' : 'mic'} />
           </button>
           <select
             className="field"
@@ -929,10 +1687,40 @@ export default function WordPad({ win, props, active }) {
               <option key={l.id} value={l.id}>{l.label}</option>
             ))}
           </select>
+          <span className="tb-div" />
+          <button
+            className={'btn tool ' + (isW95 ? 'pressed' : '')}
+            title={isW95 ? 'Switch to WordPad 95 Skin' : 'Switch to Microsoft Word 95 Skin Mode'}
+            onClick={() => setSkinMode((m) => (m === 'word95' ? 'wordpad' : 'word95'))}
+          >
+            <WpIcon name="word95" />
+          </button>
         </div>
       )}
       {showFormatBar && (
         <div className="toolbar">
+          {isW95 && (
+            <>
+              <span className="wp-grip" />
+              <select
+                className="field"
+                style={{ height: 22, padding: '0 3px', width: 88 }}
+                title="Paragraph Style"
+                value={blockStyle}
+                onChange={(e) => {
+                  const tag = e.target.value;
+                  setBlockStyle(tag);
+                  exec('formatBlock', `<${tag}>`, true);
+                }}
+              >
+                <option value="p">Normal</option>
+                <option value="h1">Heading 1</option>
+                <option value="h2">Heading 2</option>
+                <option value="h3">Heading 3</option>
+                <option value="blockquote">Quote</option>
+              </select>
+            </>
+          )}
           <select className="field" style={{ height: 22, padding: '0 4px' }} value={font} onChange={(e) => { setFont(e.target.value); exec('fontName', e.target.value, true); }}>
             {FONTS.map((f) => <option key={f} value={f}>{f}</option>)}
           </select>
@@ -940,34 +1728,95 @@ export default function WordPad({ win, props, active }) {
             {SIZES.map(([val, pt]) => <option key={val} value={val}>{pt} pt</option>)}
           </select>
           <span className="tb-div" />
-          <button className="btn tool" style={{ fontWeight: 'bold', width: 24 }} title="Bold" onMouseDown={(e) => { e.preventDefault(); exec('bold'); }}>B</button>
-          <button className="btn tool" style={{ fontStyle: 'italic', width: 24 }} title="Italic" onMouseDown={(e) => { e.preventDefault(); exec('italic'); }}>I</button>
-          <button className="btn tool" style={{ textDecoration: 'underline', width: 24 }} title="Underline" onMouseDown={(e) => { e.preventDefault(); exec('underline'); }}>U</button>
-          <label className="btn tool" title="Selected Text Color" onPointerDown={captureSelection} style={{ position: 'relative', width: 28 }}>
-            <span style={{ borderBottom: `3px solid ${color}`, fontWeight: 'bold' }}>A</span>
+          <button className={'btn tool ' + (fmtState.b ? 'pressed' : '')} title="Bold" onMouseDown={(e) => { e.preventDefault(); exec('bold'); }}><WpIcon name="bold" /></button>
+          <button className={'btn tool ' + (fmtState.i ? 'pressed' : '')} title="Italic" onMouseDown={(e) => { e.preventDefault(); exec('italic'); }}><WpIcon name="italic" /></button>
+          <button className={'btn tool ' + (fmtState.u ? 'pressed' : '')} title="Underline" onMouseDown={(e) => { e.preventDefault(); exec('underline'); }}><WpIcon name="underline" /></button>
+          <label className="btn tool" title="Selected Text Color" onPointerDown={captureSelection} style={{ position: 'relative' }}>
+            <WpIcon name="color" color={color} />
             <input type="color" value={color} onChange={(e) => { setColor(e.target.value); exec('foreColor', e.target.value, true); }} style={{ position: 'absolute', inset: 0, opacity: 0, width: '100%', cursor: 'pointer' }} />
           </label>
-          <label className="btn tool" title="Selected Text Background / Highlight Color" onPointerDown={captureSelection} style={{ position: 'relative', width: 32 }}>
-            <span style={{ background: bgColor, color: '#000', padding: '0 3px', border: '1px solid #808080', fontWeight: 'bold', lineHeight: '14px' }}>ab</span>
+          <label className="btn tool" title="Selected Text Background / Highlight Color" onPointerDown={captureSelection} style={{ position: 'relative' }}>
+            <WpIcon name="highlight" bgColor={bgColor} />
             <input type="color" value={bgColor} onChange={(e) => applyHighlight(e.target.value)} style={{ position: 'absolute', inset: 0, opacity: 0, width: '100%', cursor: 'pointer' }} />
           </label>
-          <button className="btn tool" title="Clear Highlight Background" onMouseDown={(e) => { e.preventDefault(); applyHighlight('transparent'); }} style={{ width: 22, fontSize: 10 }}>∅</button>
+          <button className="btn tool" title="Clear Highlight Background" onMouseDown={(e) => { e.preventDefault(); applyHighlight('transparent'); }}><WpIcon name="clear-highlight" /></button>
           <span className="tb-div" />
-          <button className="btn tool" title="Align Left" onMouseDown={(e) => { e.preventDefault(); exec('justifyLeft'); }}>⫷</button>
-          <button className="btn tool" title="Center" onMouseDown={(e) => { e.preventDefault(); exec('justifyCenter'); }}>☰</button>
-          <button className="btn tool" title="Align Right" onMouseDown={(e) => { e.preventDefault(); exec('justifyRight'); }}>⫸</button>
-          <button className="btn tool" title="Bullets" onMouseDown={(e) => { e.preventDefault(); exec('insertUnorderedList'); }}>•≡</button>
+          <button className={'btn tool ' + (fmtState.align === 'left' ? 'pressed' : '')} title="Align Left" onMouseDown={(e) => { e.preventDefault(); exec('justifyLeft'); }}><WpIcon name="align-left" /></button>
+          <button className={'btn tool ' + (fmtState.align === 'center' ? 'pressed' : '')} title="Center" onMouseDown={(e) => { e.preventDefault(); exec('justifyCenter'); }}><WpIcon name="align-center" /></button>
+          <button className={'btn tool ' + (fmtState.align === 'right' ? 'pressed' : '')} title="Align Right" onMouseDown={(e) => { e.preventDefault(); exec('justifyRight'); }}><WpIcon name="align-right" /></button>
+          {isW95 && <button className={'btn tool ' + (fmtState.align === 'full' ? 'pressed' : '')} title="Justify" onMouseDown={(e) => { e.preventDefault(); exec('justifyFull'); }}><WpIcon name="align-justify" /></button>}
+          <button className={'btn tool ' + (fmtState.ul ? 'pressed' : '')} title="Bullets" onMouseDown={(e) => { e.preventDefault(); exec('insertUnorderedList'); }}><WpIcon name="bullets" /></button>
+          {isW95 && (
+            <>
+              <button className={'btn tool ' + (fmtState.ol ? 'pressed' : '')} title="Numbering" onMouseDown={(e) => { e.preventDefault(); exec('insertOrderedList'); }}><WpIcon name="numbers" /></button>
+              <button className="btn tool" title="Decrease Indent" onMouseDown={(e) => { e.preventDefault(); adjustIndent(-24); }}><WpIcon name="outdent" /></button>
+              <button className="btn tool" title="Increase Indent" onMouseDown={(e) => { e.preventDefault(); adjustIndent(24); }}><WpIcon name="indent" /></button>
+              <button className={'btn tool ' + (fmtState.border ? 'pressed' : '')} title="Toggle Paragraph Border" onMouseDown={(e) => { e.preventDefault(); toggleParagraphBorder(); }}><WpIcon name="border" /></button>
+            </>
+          )}
         </div>
       )}
       {showRuler && (
-        <div className="wp-ruler">
-          {[1, 2, 3, 4, 5, 6].map((inch) => <span key={inch}>{inch}</span>)}
+        <div className="wp-ruler-bar" onDoubleClick={resetCurrentMargins} title="Drag Left / Right margin markers to adjust paragraph L/R margins (double-click to reset)">
+          {isW95 && (
+            <button
+              type="button"
+              className="wp-ruler-corner"
+              title="Reset Paragraph Margins (0px)"
+              onClick={resetCurrentMargins}
+            >
+              L
+            </button>
+          )}
+          <div className="wp-ruler-inner">
+            <div className="wp-ruler-track" ref={rulerTrackRef}>
+              <div className="wp-ruler-shade l" style={{ width: rulerLeft }} />
+              <div className="wp-ruler-shade r" style={{ width: rulerRight }} />
+              <div className="wp-ruler-ticks">
+                <div className="wp-ruler-nums">
+                  {[1, 2, 3, 4, 5, 6, 7].map((inch) => (
+                    <span key={inch} className="wp-ruler-num" style={{ left: inch * 96 }}>
+                      {inch}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div
+                className="wp-rmark l"
+                style={{ left: rulerLeft }}
+                title={`Left Paragraph Margin: ${rulerLeft}px (drag to adjust)`}
+                onPointerDown={(e) => startRulerDrag('l', e)}
+              >
+                <svg viewBox="0 0 11 18" aria-hidden="true">
+                  <polygon points="1,1 10,1 10,5 5.5,9 1,5" fill="#dfdfdf" stroke="#000" strokeWidth="1" />
+                  <polygon points="5.5,9 10,13 10,15 1,15 1,13" fill="#dfdfdf" stroke="#000" strokeWidth="1" />
+                  <rect x="2" y="15" width="7" height="2" fill="#c0c0c0" stroke="#000" strokeWidth="1" />
+                </svg>
+              </div>
+              <div
+                className="wp-rmark r"
+                style={{ right: rulerRight }}
+                title={`Right Paragraph Margin: ${rulerRight}px (drag to adjust)`}
+                onPointerDown={(e) => startRulerDrag('r', e)}
+              >
+                <svg viewBox="0 0 11 18" aria-hidden="true">
+                  <polygon points="5.5,9 10,14 10,17 1,17 1,14" fill="#dfdfdf" stroke="#000" strokeWidth="1" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          {rulerDrag && (
+            <div className="wp-ruler-tip" style={{ left: rulerDrag.x + 10, top: rulerDrag.y - 22 }}>
+              {rulerDrag.side === 'l' ? 'Left' : 'Right'} Margin: {rulerDrag.px}px
+            </div>
+          )}
         </div>
       )}
       <div className="field wp-scroll">
         <div
           ref={ed}
-          className="wp-page"
+          className={`wp-page${showMarks ? ' wp-show-marks' : ''}${painterFmt ? ' wp-painter-active' : ''}`}
+          style={{ zoom: isW95 && zoomPct !== 100 ? zoomPct / 100 : undefined }}
           contentEditable
           suppressContentEditableWarning
           onPointerDown={(e) => {
@@ -976,14 +1825,56 @@ export default function WordPad({ win, props, active }) {
           }}
           onInput={() => { setDirty(true); updateWordCount(); captureSelection(); }}
           onKeyUp={captureSelection}
-          onMouseUp={captureSelection}
+          onMouseUp={() => { applyPainterFormatIfArmed(); captureSelection(); }}
+          onFocus={syncFromCaret}
           onContextMenu={editorContextMenu}
         />
       </div>
       <StatusBar>
-        <span>{voice.listening ? `🎙️ ${voice.interim || 'Listening...'}` : `${sourceLabel}${dirty ? ' *' : ''}`}</span>
-        <span>Format: {format.toUpperCase()}</span>
-        <span>{wordCount} words</span>
+        {isW95 ? (
+          <>
+            <span>
+              <span className="wp-stat-views">
+                <button
+                  type="button"
+                  className={'wp-stat-vbtn ' + (word95View === 'normal' ? 'on' : '')}
+                  title="Normal View"
+                  onClick={() => setWord95View('normal')}
+                >
+                  <svg viewBox="0 0 12 12" aria-hidden="true">
+                    <rect x="1" y="2" width="10" height="1" fill="#000" />
+                    <rect x="1" y="5" width="8" height="1" fill="#000" />
+                    <rect x="1" y="8" width="10" height="1" fill="#000" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  className={'wp-stat-vbtn ' + (word95View === 'page' ? 'on' : '')}
+                  title="Page Layout View"
+                  onClick={() => setWord95View('page')}
+                >
+                  <svg viewBox="0 0 12 12" aria-hidden="true">
+                    <rect x="2" y="1" width="8" height="10" fill="#fff" stroke="#000" strokeWidth="1" />
+                    <rect x="4" y="3" width="4" height="1" fill="#000080" />
+                    <rect x="4" y="5" width="4" height="1" fill="#808080" />
+                    <rect x="4" y="7" width="3" height="1" fill="#808080" />
+                  </svg>
+                </button>
+              </span>
+              {voice.listening ? `🎙️ ${voice.interim || 'Listening...'}` : `Page 1  Sec 1  Ln ${cursorPos.ln}  Col ${cursorPos.col}  |  ${sourceLabel}${dirty ? ' *' : ''}`}
+            </span>
+            <span>L:{rulerLeft} R:{rulerRight}</span>
+            <span>Format: {format.toUpperCase()}</span>
+            <span>{wordCount} words</span>
+          </>
+        ) : (
+          <>
+            <span>{voice.listening ? `🎙️ ${voice.interim || 'Listening...'}` : `${sourceLabel}${dirty ? ' *' : ''}`}</span>
+            <span>L:{rulerLeft} R:{rulerRight}</span>
+            <span>Format: {format.toUpperCase()}</span>
+            <span>{wordCount} words</span>
+          </>
+        )}
       </StatusBar>
     </div>
   );

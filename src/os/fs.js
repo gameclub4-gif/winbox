@@ -61,6 +61,42 @@ const APP_EXES = {
   'snake.exe': 'snake', 'iexplore.exe': 'browser', 'dosgames.exe': 'dosgames', 'drives.exe': 'drives', 'sysmon.exe': 'sysmon', 'winhelp.exe': 'help',
 };
 
+export const ROM_FOLDERS = {
+  dosbox: 'rom_dos',
+  amiga: 'rom_amiga',
+  amiga_sae_aros: 'rom_amiga',
+  amiga_vami_aros: 'rom_amiga',
+  amiga_emutos: 'rom_amiga',
+  atarist: 'rom_atarist',
+  amstradcpc: 'rom_amstrad',
+  c64: 'rom_c64',
+  zxspectrum: 'rom_zx',
+  nes: 'rom_consoles',
+  snes: 'rom_consoles',
+  segaMD: 'rom_consoles',
+  segaMS: 'rom_consoles',
+  arcade: 'rom_consoles',
+  pce: 'rom_consoles',
+  gb: 'rom_consoles',
+  gba: 'rom_consoles',
+  mac68k: 'games',
+};
+
+export const ALL_ROM_FOLDER_IDS = [
+  'games',
+  'rom_dos',
+  'rom_amiga',
+  'rom_atarist',
+  'rom_amstrad',
+  'rom_c64',
+  'rom_zx',
+  'rom_consoles',
+];
+
+export function romFolderForSystem(sysId) {
+  return ROM_FOLDERS[sysId] || 'games';
+}
+
 function ensureSystemFolders() {
   const t = Date.now();
   const ensure = (id, name, parent) => {
@@ -72,6 +108,13 @@ function ensureSystemFolders() {
   };
   ensure('bios', 'BIOS', ROOT);
   ensure('saves', 'Saves', ROOT);
+  ensure('rom_dos', 'DOS', ROOT);
+  ensure('rom_amiga', 'Amiga', ROOT);
+  ensure('rom_atarist', 'AtariST', ROOT);
+  ensure('rom_amstrad', 'Amstrad', ROOT);
+  ensure('rom_c64', 'C64', ROOT);
+  ensure('rom_zx', 'ZXSpectrum', ROOT);
+  ensure('rom_consoles', 'Consoles', ROOT);
 }
 
 async function seed() {
@@ -85,6 +128,13 @@ async function seed() {
   mk('pf', 'Program Files', ROOT, 'folder');
   mk('docs', 'My Documents', ROOT, 'folder');
   mk('games', 'DOS Games', ROOT, 'folder');
+  mk('rom_dos', 'DOS', ROOT, 'folder');
+  mk('rom_amiga', 'Amiga', ROOT, 'folder');
+  mk('rom_atarist', 'AtariST', ROOT, 'folder');
+  mk('rom_amstrad', 'Amstrad', ROOT, 'folder');
+  mk('rom_c64', 'C64', ROOT, 'folder');
+  mk('rom_zx', 'ZXSpectrum', ROOT, 'folder');
+  mk('rom_consoles', 'Consoles', ROOT, 'folder');
   mk('bios', 'BIOS', ROOT, 'folder');
   mk('saves', 'Saves', ROOT, 'folder');
   mk('temp', 'Temp', 'win', 'folder');

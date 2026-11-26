@@ -13,6 +13,7 @@ export const APP_NAMES = {
   wordpad: 'WordPad',
   notepad: 'Notepad',
   paint: 'Paint',
+  dosgames: 'DOSBox & Retro',
 };
 
 export const APP_ICONS = {
@@ -20,6 +21,7 @@ export const APP_ICONS = {
   wordpad: 'wordpad',
   notepad: 'notepad',
   paint: 'paint',
+  dosgames: 'dosgames',
 };
 
 export const SUPPORTED_TYPES = new Set([
